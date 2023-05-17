@@ -1,0 +1,16 @@
+Package: ShinyWheater
+Title: A Shiny app to show the weather in a child-friendly way
+Version: 0.0.1
+Authors@R: 
+    person(given = "Magda",
+    family = "Matetovici", 
+    email = "magda.matetovici@yahoo.com", 
+    role = c("aut", "cre"))
+Description: This app will show the weather in a Shiny app in a friendly manner for children. It will show temperature, wind, chances of rain. Depending on the temperature, wind and rain it will show a picture of what can be done outside which can be refreshed to give several ideas.
+License: MIT license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+ httr,
+ jsonlite
