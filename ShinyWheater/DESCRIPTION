@@ -1,4 +1,4 @@
-Package: ShinyWheater
+Package: ShinyWeather
 Title: A Shiny app to show the weather in a child-friendly way
 Version: 0.0.1
 Authors@R: 
