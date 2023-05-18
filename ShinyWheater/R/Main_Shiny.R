@@ -1,8 +1,8 @@
 # library("shiny")
 source("R/weather.R")
-library(shinyjs)
+# library(shinyjs)
 #install.packages("shinyjs")
-library(tidyverse)
+# library(tidyverse)
 
 #library(shinydashboard)
 # Define UI for application that draws a histogram
@@ -128,7 +128,14 @@ server <- function(input, output) {
 
 }
 
-#this is the function that will be run by the user
+#' runShinyWeather
+#' 
+#' This is the function that can be run by the user to open the ShinyWeather App
+#' 
+#' @export 
+#'
+#' @examples runShinyWeather()
+#' 
 runShinyWeather <- function() {
   shiny::shinyApp(ui = ui, server = server)
 }
