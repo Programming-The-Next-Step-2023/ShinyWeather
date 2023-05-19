@@ -14,8 +14,8 @@ ui <- shiny::fluidPage(
   # Sidebar with a slider input for number of bins 
   shiny::sidebarLayout(
     shiny::sidebarPanel(
-      shiny::dateInput("date", "Select a date:", value = Sys.Date()),
-      shiny::actionButton("go_button", "Go"),
+      shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()),
+      shiny::actionButton("go_button", "Show Weather"),
       shiny::br(),
       shiny::strong("Temperature (°C):"),
       shiny::textOutput("Temperature"),
@@ -50,6 +50,10 @@ ui <- shiny::fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
+  shiny::observeEvent(input$map_click, {
+    print(input$map_click)
+  })
+  
   #this outputs the map
   output$map <- leaflet::renderLeaflet({
       leaflet::setView(lng = 4.89, lat = 52.37, zoom = 7, leaflet::addTiles(leaflet::leaflet())) # Set the initial view to focus on the Netherlands
@@ -57,7 +61,13 @@ server <- function(input, output) {
   
   #this outputs a test saying which date was selected 
   output$selectedDate <- shiny::renderText({
+    
+    # can do some logic with the date here...
+    print(input$date)
+    print(input$date + 1)
+    
     paste("You have selected:", input$date)
+    
   })
   
   #this shows the image when one clicks Show image
