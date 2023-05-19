@@ -48,7 +48,9 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0) 
   # rain
   rain_day <- round(mean(weather_data$hourly$rain[(day_index*24) + 1:(day_index*24) + 24]), 2)
   
-  list('Temp' = temperature_day, 'Wind' = wind_speed_day, 'Showers' = showers_day, 'Snow' = snow_day, 'Rain' = rain_day)
+  rain_day <- rain_day+showers_day
+  
+  list('Temp' = temperature_day, 'Wind' = wind_speed_day, 'Snow' = snow_day, 'Rain' = rain_day)
 }
 
 

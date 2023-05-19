@@ -14,15 +14,13 @@ ui <- shiny::fluidPage(
   # Sidebar with a slider input for number of bins 
   shiny::sidebarLayout(
     shiny::sidebarPanel(
-      shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()),
+      shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
       shiny::actionButton("go_button", "Show Weather"),
       shiny::br(),
       shiny::strong("Temperature (°C):"),
       shiny::textOutput("Temperature"),
       shiny::strong("Amount of rain"),
       shiny::textOutput("Rain"),
-      shiny::strong("Amount of shower"),
-      shiny::textOutput("Showers"),
       shiny::strong("Amount of snow"),
       shiny::textOutput("Snow"),
       shiny::strong("Wind Speed"),
@@ -132,7 +130,6 @@ server <- function(input, output) {
     output$Temperature <- shiny::renderText({weather_data$Temp})
     output$Rain <- shiny::renderText({weather_data$Rain})
     output$Snow <- shiny::renderText({weather_data$Snow})
-    output$Showers <- shiny::renderText({weather_data$Showers})
     output$Wind <- shiny::renderText({weather_data$Wind})
   })
 
