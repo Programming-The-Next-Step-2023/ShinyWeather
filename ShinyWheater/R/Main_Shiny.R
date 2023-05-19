@@ -75,9 +75,8 @@ server <- function(input, output) {
            contentType = 'image/png',
            width = 400,
            height = 400,
-           alt = "This is alternate text",
-           deleteFile = FALSE)
-    })
+           alt = "This is alternate text")
+    }, deleteFile = FALSE)
   })
   
   #here I store all the images with activities to do
@@ -103,7 +102,6 @@ server <- function(input, output) {
            height = 400,
            alt = "This is alternate text")
     }, deleteFile = FALSE)
-    
   })
   
   #if forward is clicked, the current index becomes one image after or stays the same if it is the last image
@@ -125,14 +123,34 @@ server <- function(input, output) {
   #when Go button is pressed, we show weather variables for day and location (day and location to be implemented)
   shiny::observeEvent(input$go_button, {
     
-    date <-as.Date(input$date, format = "%Y-%m-%d")
-    weather_data <- all_weather_data(day_index = 3)
+    # obtain day_index from selected date
+    # date <-as.Date(input$date, format = "%Y-%m-%d")
+    date <- as.Date(input$date)
+    day_index <- get_day_index(date)
+    
+    # obtain longitude and latitude from map_click
+    # if user didn't click on the map, use a default location
+    if (is.null(input$map_click)) {
+      longitude <- 4.89
+      latitude <- 52.37
+    } else {
+      longitude <- input$map_click$lng
+      latitude <- input$map_click$lat
+    }
+    
+    weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index)
     output$Temperature <- shiny::renderText({weather_data$Temp})
     output$Rain <- shiny::renderText({weather_data$Rain})
     output$Snow <- shiny::renderText({weather_data$Snow})
     output$Wind <- shiny::renderText({weather_data$Wind})
+    
   })
 
+}
+
+# Takes a date object and gives a day_index based on number of days different to current date
+get_day_index <- function(date) {
+  return(as.integer(date - Sys.Date()))
 }
 
 #' runShinyWeather
