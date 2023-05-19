@@ -26,6 +26,10 @@ get_weather_now <- function(api = "https://api.open-meteo.com/v1/forecast?latitu
 
 
 all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0) {
+  if (day_index >6 | day_index < 0){
+    stop("The day index can only take values from 0 to 6 (weather data for 7 days is available)")
+  }
+  
   api <- weather_api(latitude, longitude)
   weather_data <- get_weather_now(api)
   
