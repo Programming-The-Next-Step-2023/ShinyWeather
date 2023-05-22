@@ -25,6 +25,11 @@ ui <- shiny::fluidPage(
       shiny::textOutput("Snow"),
       shiny::strong("Wind Speed"),
       shiny::textOutput("Wind"),
+      shiny::br(),
+      shiny::actionButton("go_clothes", "How to dress?"),
+      shiny::br(),
+      shiny::br(),
+      shiny::imageOutput("dress")
       
     ),
     
@@ -47,6 +52,15 @@ ui <- shiny::fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  shiny::observeEvent(input$go_clothes, {
+    output$dress <- shiny::renderImage({
+      list(src = "R/www/winter_clothes.jpg",
+           contentType = 'image/jpg',
+           width = "80%",
+           alt = "This is alternate text")
+    }, deleteFile = FALSE)
+  })
   
   shiny::observeEvent(input$map_click, {
     print(input$map_click)
@@ -71,8 +85,8 @@ server <- function(input, output) {
   #this shows the image when one clicks Show image
   shiny::observeEvent(input$show, {
     output$image <- shiny::renderImage({
-      list(src = "R/www/sun.png",
-           contentType = 'image/png',
+      list(src = "R/www/bubbles.jpg",
+           contentType = 'image/jpg',
            width = 400,
            height = 400,
            alt = "This is alternate text")
@@ -81,8 +95,8 @@ server <- function(input, output) {
   
   #here I store all the images with activities to do
   images <- c(
-    "R/www/sun.png",
-    "R/www/cloud.png"
+    "R/www/bubbles.jpg",
+    "R/www/visit_museum.jpg"
   )
   
   #the Images vector will be indexed according to the cliks on back and foward buttons
