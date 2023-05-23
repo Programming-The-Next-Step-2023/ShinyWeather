@@ -68,9 +68,9 @@ find_activities <- function (temp, rain_shower, snow, wind){
   if (nrow(newdata) == 0) {
     return(NULL)
   }
-  images <- paste0("R/www/", newdata$picture)
+  found_activities <- paste0("R/www/", newdata$picture)
   
-  return(images) 
+  return(found_activities) 
 }
  
 

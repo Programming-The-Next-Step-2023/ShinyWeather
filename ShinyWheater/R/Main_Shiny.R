@@ -22,7 +22,8 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Input button to show the weather 
-      shiny::actionButton("go_button", "Show Weather"),
+      shiny::actionButton("go_button", "Show Weather", icon("cloud"), 
+                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::strong("Temperature (°C):"),
       shiny::textOutput("Temperature"),
@@ -35,7 +36,8 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Input button to show the clothing advice
-      shiny::actionButton("go_clothes", "How to dress?"),
+      shiny::actionButton("go_clothes", "How to dress?", icon("star"), 
+                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::br(),
       shiny::imageOutput("dress")
@@ -116,28 +118,31 @@ server <- function(input, output) {
   # Because the input in the find_activities function changes when we set location and time
   # We set images to be a reactive function
   images <- shiny::reactive({
+    
+    activities <- NULL
+    
+    # set index back to 1
+    currentImageIndex(1)
+    
     #if the weather data has values 
     if (!is.null(weather_data_RT())) {
       
-      # set index back to 1
-      currentImageIndex(1)
-      
       #look for activities
       activities <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind)
-      
-      # check if we found any activities
-      # if not, put a default photo
-      if (is.null(activities)) {
-        activities <- c("R/www/bubbles.jpg")
-      }
-      return(activities)
     }
+    
+    # check if we found any activities
+    # if not, put a default photo
+    if (is.null(activities)) {
+      activities <- c("R/www/bubbles.jpg")
+    }
+    return(activities)
   })
   
   #this shows the image when one clicks "Show image"
   shiny::observeEvent(input$show, {
     output$image <- shiny::renderImage({
-      
+      print(images())
       list(src = images()[currentImageIndex()],
            contentType = 'image/jpg',
            width = 400,
