@@ -53,6 +53,9 @@ ui <- shiny::fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
+  weather_data_RT <- reactiveVal(NULL)
+  
+  # this outputs how to dress 
   shiny::observeEvent(input$go_clothes, {
     output$dress <- shiny::renderImage({
       list(src = "R/www/winter_clothes.jpg",
@@ -82,27 +85,39 @@ server <- function(input, output) {
     
   })
   
-  #this shows the image when one clicks Show image
+  #the Images vector will be indexed according to the cliks on back and foward buttons
+  #we start with a currentImageIndex on the first image
+  currentImageIndex <- shiny::reactiveVal(1)
+  
+  images <- shiny::reactive({
+    if (!is.null(weather_data_RT())) {
+      
+      # set index back to 1
+      currentImageIndex(1)
+      
+      activities <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind)
+      
+      # check if we found any activities
+      # if not, put a default photo
+      if (is.null(activities)) {
+        activities <- c("R/www/bubbles.jpg")
+      }
+      return(activities)
+    }
+  })
+  
+  #this shows the image when one clicks "Show image"
   shiny::observeEvent(input$show, {
     output$image <- shiny::renderImage({
-      list(src = "R/www/bubbles.jpg",
+      
+      list(src = images()[currentImageIndex()],
            contentType = 'image/jpg',
            width = 400,
            height = 400,
            alt = "This is alternate text")
     }, deleteFile = FALSE)
   })
-  
-  #here I store all the images with activities to do
-  images <- c(
-    "R/www/bubbles.jpg",
-    "R/www/visit_museum.jpg"
-  )
-  
-  #the Images vector will be indexed according to the cliks on back and foward buttons
-  #we start with a currentImageIndex on the first image
-  currentImageIndex <- shiny::reactiveVal(1)
-  
+
   #if back is clicked, the current index becomes one image before or stays the same if there is no image before
   shiny::observeEvent(input$back, {
     if (!is.na(currentImageIndex())) {
@@ -110,7 +125,7 @@ server <- function(input, output) {
     }
     
     output$image <- shiny::renderImage({
-      list(src = images[currentImageIndex()],
+      list(src = images()[currentImageIndex()],
            contentType = 'image/png',
            width = 400,
            height = 400,
@@ -121,11 +136,11 @@ server <- function(input, output) {
   #if forward is clicked, the current index becomes one image after or stays the same if it is the last image
   shiny::observeEvent(input$forward, {
     if (!is.na(currentImageIndex())) {
-      currentImageIndex(min(length(images), currentImageIndex() + 1))
+      currentImageIndex(min(length(images()), currentImageIndex() + 1))
     }
     
     output$image <- shiny::renderImage({
-      list(src = images[currentImageIndex()],
+      list(src = images()[currentImageIndex()],
            contentType = 'image/png',
            width = 400,
            height = 400,
@@ -138,7 +153,6 @@ server <- function(input, output) {
   shiny::observeEvent(input$go_button, {
     
     # obtain day_index from selected date
-    # date <-as.Date(input$date, format = "%Y-%m-%d")
     date <- as.Date(input$date)
     day_index <- get_day_index(date)
     
@@ -152,7 +166,10 @@ server <- function(input, output) {
       latitude <- input$map_click$lat
     }
     
+    # update weather and set reactive value
     weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index)
+    weather_data_RT(weather_data)
+    
     output$Temperature <- shiny::renderText({weather_data$Temp})
     output$Rain <- shiny::renderText({weather_data$Rain})
     output$Snow <- shiny::renderText({weather_data$Snow})
