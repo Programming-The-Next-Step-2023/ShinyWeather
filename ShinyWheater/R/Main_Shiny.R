@@ -85,6 +85,10 @@ server <- function(input, output) {
   
   #This prints the latitude and longitude of where we clicked, it is a check 
   shiny::observeEvent(input$map_click, {
+    click <- input$map_click
+    lat <- click$lat
+    lng <- click$lng
+    leaflet::addCircleMarkers(lng = lng, lat = lat, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
     print(input$map_click)
   })
   
