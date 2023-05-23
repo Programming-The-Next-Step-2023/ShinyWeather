@@ -56,15 +56,23 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0) 
 
 #function to obtain the activity based on temperature, rain&shower, snow and wind 
 
- find_activities <- function (temp, rain_shower, wind){
+find_activities <- function (temp, rain_shower, snow, wind){
   activities <- read.csv("R/data/acti_try.csv")
   newdata <- subset(activities,  temp >= temp_low & temp <= temp_high)
   newdata <- subset(newdata,  rain_shower >= rain_low & rain_shower <= rain_high)
+  newdata <- subset(newdata,  snow >= snow_low & snow <= snow_high)
   newdata <- subset(newdata,  wind >= wind_low & wind <= wind_high)
-  images <- newdata$picture
+  
+  # add directory path in front of the picture filenames
+  # only do this if we found any picture
+  if (nrow(newdata) == 0) {
+    return(NULL)
+  }
+  images <- paste0("R/www/", newdata$picture)
+  
   return(images) 
- }
- find_activities(10, 20, 10)
+}
+ 
 
 
 ################################################################################
