@@ -55,7 +55,10 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Activities button and images that can be browsed through
-      shiny::actionButton("show", "Show Activities"),
+      shiny::actionButton("show", "Show Activities", icon("search"),
+                          style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
+      shiny::br(),
+      shiny::br(),
       shiny::imageOutput("image"),
       shiny::div(
         class = "btn-group",
