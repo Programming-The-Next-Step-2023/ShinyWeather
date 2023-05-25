@@ -22,7 +22,7 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Input button to show the weather 
-      shiny::actionButton("go_button", "Show Weather", icon("cloud"), 
+      shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::strong("Temperature (°C):"),
@@ -36,7 +36,7 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Input button to show the clothing advice
-      shiny::actionButton("go_clothes", "How to dress?", icon("star"), 
+      shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::br(),
@@ -55,7 +55,7 @@ ui <- shiny::fluidPage(
       shiny::br(),
       
       #Activities button and images that can be browsed through
-      shiny::actionButton("show", "Show Activities", icon("search"),
+      shiny::actionButton("show", "Show Activities", shiny::icon("search"),
                           style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
       shiny::br(),
       shiny::br(),
@@ -211,6 +211,26 @@ server <- function(input, output) {
     output$Snow <- shiny::renderText({weather_data$Snow})
     output$Wind <- shiny::renderText({weather_data$Wind})
     
+  })
+  
+  #the images for the clothing
+  clothes_images <- shiny::reactive({
+    
+    clothes <- NULL
+
+    #if the weather data has values 
+    if (!is.null(weather_data_RT())) {
+      
+      #look for activities
+      clothes <- find_clothing(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow)
+    }
+    
+    # check if we found any activities
+    # if not, put a default photo
+    if (is.null(clothes)) {
+      clothes <- c("R/www/bubbles.jpg")
+    }
+    return(clothes)
   })
 
 }

@@ -74,6 +74,23 @@ find_activities <- function (temp, rain_shower, snow, wind){
 }
  
 
+#function to obtain the clothing based on temperature, rain&shower and snow 
+
+find_clothing <- function (temp, rain_shower, snow){
+  clothing <- read.csv("R/data/clothes.csv")
+  newdata <- subset(clothing,  temp >= temp_low & temp <= temp_high)
+  newdata <- subset(clothing,  rain_shower >= rain_low & rain_shower <= rain_high)
+  newdata <- subset(clothing,  snow >= snow_low & snow <= snow_high)
+  
+  # add directory path in front of the picture filenames
+  # only do this if we found any picture
+  if (nrow(newdata) == 0) {
+    return(NULL)
+  }
+  found_clothes <- paste0("R/www/", newdata$picture)
+  
+  return(found_clothes) 
+}
 
 ################################################################################
 ### Functions below will be removed later
