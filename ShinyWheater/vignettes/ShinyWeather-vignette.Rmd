@@ -1,0 +1,48 @@
+---
+title: "ShinyWeather-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ShinyWeather-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo = FALSE}
+library(ShinyWeather)
+```
+
+
+```{r, fig.cap="Screenshot Example", out.width = "80%", echo = FALSE}
+knitr::include_graphics("www/app.jpeg") 
+```
+
+# Description
+
+Description of the purpose of the app
+
+# Running the app
+
+## Installation
+
+Description of installation of app
+
+## How to run the App
+
+Explain how the shiny app should be started
+
+
+# Features
+
+Showcase the features of the app with screenshots and explain all the input fields
+
+# Conclusion
+
+Wrapping up the report
+
