@@ -57,7 +57,7 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0) 
 #function to obtain the activity based on temperature, rain&shower, snow and wind 
 
 find_activities <- function (temp, rain_shower, snow, wind){
-  activities <- read.csv("R/data/acti_try.csv")
+  activities <- read.csv("R/data/activities.csv")
   newdata <- subset(activities,  temp >= temp_low & temp <= temp_high)
   newdata <- subset(newdata,  rain_shower >= rain_low & rain_shower <= rain_high)
   newdata <- subset(newdata,  snow >= snow_low & snow <= snow_high)
@@ -77,7 +77,7 @@ find_activities <- function (temp, rain_shower, snow, wind){
 #function to obtain the clothing based on temperature, rain&shower and snow 
 
 find_clothing <- function (temp, rain_shower, snow){
-  clothing <- read.csv("R/data/clothes.csv")
+  clothing <- read.csv("R/data/clothing.csv")
   newdata <- subset(clothing,  temp >= temp_low & temp <= temp_high)
   newdata <- subset(clothing,  rain_shower >= rain_low & rain_shower <= rain_high)
   newdata <- subset(clothing,  snow >= snow_low & snow <= snow_high)
