@@ -9,6 +9,13 @@ source("R/weather.R")
 
 ui <- shiny::fluidPage(
   
+  shiny::tags$head(
+    shiny::tags$script(shiny::HTML("
+      Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
+        $('#go_button').css('background-color', message);
+      });
+    "))),
+  
   # Application title
   shiny::titlePanel("Shiny Weather App"),
   
@@ -57,13 +64,18 @@ ui <- shiny::fluidPage(
       #Activities button and images that can be browsed through
       shiny::actionButton("show", "Show Activities", shiny::icon("search"),
                           style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
+      shiny::conditionalPanel(
+        condition = "input.show % 2 == 1",
+        shiny::div(
+          class = "btn-group",
+          shiny::actionButton("back", "Back"),
+          shiny::actionButton("forward", "Forward"),
+      ),
+      shiny::textOutput("hi"),
       shiny::br(),
       shiny::br(),
-      shiny::imageOutput("image"),
-      shiny::div(
-        class = "btn-group",
-        shiny::actionButton("back", "Back"),
-        shiny::actionButton("forward", "Forward"),
+      shiny::imageOutput("image")
+      
         
       )
     )
@@ -72,7 +84,22 @@ ui <- shiny::fluidPage(
 
 # Define server logic required for the app 
 
-server <- function(input, output) {
+server <- function(input, output, session) {
+  
+  shiny::observe({
+    input$date
+    session$sendCustomMessage(type = 'changeButtonColor', message = "red")
+  })
+  
+  shiny::observe({
+    input$map_click
+    session$sendCustomMessage(type = 'changeButtonColor', message = "red")
+  })
+  
+  shiny::observe({
+    input$go_button
+    session$sendCustomMessage(type = 'changeButtonColor', message = "blue")
+  })
   
   #We start with a reactive value for the weathervalues, which
   # will be changed when we select a location and a day
@@ -94,7 +121,7 @@ server <- function(input, output) {
     lat <- click$lat
     lng <- click$lng
     leaflet::addCircleMarkers(lng = lng, lat = lat, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
-    print(input$map_click)
+    # print(input$map_click)
   })
   
   #This outputs the map with default to Amsterdam
@@ -106,8 +133,8 @@ server <- function(input, output) {
   output$selectedDate <- shiny::renderText({
     
     # can do some logic with the date here...
-    print(input$date)
-    print(input$date + 1)
+    # print(input$date)
+    # print(input$date + 1)
     
     paste("You have selected:", input$date)
     
@@ -141,6 +168,10 @@ server <- function(input, output) {
     }
     return(activities)
   })
+  
+  shiny::observeEvent(input$backy,{
+    output$hi <- shiny::renderText("backy")
+   })
   
   #this shows the image when one clicks "Show image"
   shiny::observeEvent(input$show, {
@@ -190,6 +221,8 @@ server <- function(input, output) {
     
     # obtain day_index from selected date
     date <- as.Date(input$date)
+    print(date)
+    print(input$map_click)
     day_index <- get_day_index(date)
     
     # obtain longitude and latitude from map_click
@@ -204,6 +237,7 @@ server <- function(input, output) {
     
     # update weather and set reactive value
     weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index)
+    print(weather_data)
     weather_data_RT(weather_data)
     
     output$Temperature <- shiny::renderText({weather_data$Temp})
