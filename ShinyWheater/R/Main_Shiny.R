@@ -19,18 +19,27 @@ ui <- shiny::fluidPage(
   # Application title
   shiny::titlePanel("Shiny Weather App"),
   
-  # Sidebar with calendar, weather values and clothing advice
-  shiny::sidebarLayout(
-    
-    shiny::sidebarPanel(
+  shiny::fluidRow(
+    shiny::column(6,
+                  #Calendar Input with only 7 days ahead available
+                  shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
+                  shiny::br(),
+                  #Output which date was selected 
+                  shiny::textOutput("selectedDate")
+                  
+    ),
+    shiny::column(6,
+                  #Output a map of the world
+                  leaflet::leafletOutput("map", width = "100%", height = 400)
+                  
+    )
+  ),
   
-      #Calendar Input with only 7 days ahead available
-      shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
-      shiny::br(),
-      
-      #Input button to show the weather 
-      shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
-                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+  shiny::fluidRow(
+    shiny::column(12, 
+       #Input button to show the weather 
+       shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
+                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::strong("Temperature (°C):"),
       shiny::textOutput("Temperature"),
@@ -40,47 +49,105 @@ ui <- shiny::fluidPage(
       shiny::textOutput("Snow"),
       shiny::strong("Wind Speed"),
       shiny::textOutput("Wind"),
-      shiny::br(),
-      
-      #Input button to show the clothing advice
-      shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
-                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-      shiny::br(),
-      shiny::br(),
-      shiny::imageOutput("dress")
-      
-    ),
+      shiny::br()
     
-    # Show a map and a collection of activities
-    shiny::mainPanel(
-      
-      #Output which date was selected 
-      shiny::textOutput("selectedDate"),
-      
-      #Output a map of the world
-      leaflet::leafletOutput("map", width = "100%", height = 400),
-      shiny::br(),
-      
-      #Activities button and images that can be browsed through
-      shiny::actionButton("show", "Show Activities", shiny::icon("search"),
-                          style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
-      shiny::conditionalPanel(
-        condition = "input.show % 2 == 1",
-        shiny::div(
-          class = "btn-group",
-          shiny::actionButton("back", "Back"),
-          shiny::actionButton("forward", "Forward"),
-      ),
-      shiny::textOutput("hi"),
-      shiny::br(),
-      shiny::br(),
-      shiny::imageOutput("image")
-      
-        
-      )
+    )
+  ),
+
+  shiny::fluidRow(
+    shiny::column(4,
+                  #Input button to show the clothing advice
+                  shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
+                                      style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                  shiny::imageOutput("dress")
+                  
+    ),
+    shiny::column(4,
+                  #Activities button and images that can be browsed through
+                  shiny::actionButton("show", "Show Activities", shiny::icon("search"),
+                                      style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
+                  shiny::conditionalPanel(
+                      condition = "input.show % 2 == 1",
+                      shiny::div(
+                        class = "btn-group",
+                        shiny::actionButton("back", "Back"),
+                        shiny::actionButton("forward", "Forward"),
+                      )
+                  ),
+                  shiny::br(),
+                  shiny::br(),
+                  shiny::imageOutput("image")
+    ),
+    shiny::column(4,
+                  shiny::textOutput("hi")
+           
     )
   )
 )
+
+# 
+#   # Sidebar with calendar, weather values and clothing advice
+#   shiny::sidebarLayout(
+#     
+#     shiny::sidebarPanel(
+#   
+#       #Calendar Input with only 7 days ahead available
+#       shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
+#       shiny::br(),
+#       
+#       #Input button to show the weather 
+#       shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
+#                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+#       shiny::br(),
+#       shiny::strong("Temperature (°C):"),
+#       shiny::textOutput("Temperature"),
+#       shiny::strong("Amount of rain"),
+#       shiny::textOutput("Rain"),
+#       shiny::strong("Amount of snow"),
+#       shiny::textOutput("Snow"),
+#       shiny::strong("Wind Speed"),
+#       shiny::textOutput("Wind"),
+#       shiny::br(),
+#       
+#       #Input button to show the clothing advice
+#       shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
+#                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+#       shiny::br(),
+#       shiny::br(),
+#       shiny::imageOutput("dress")
+#       
+#     ),
+#     
+#     # Show a map and a collection of activities
+#     shiny::mainPanel(
+#       
+#       #Output which date was selected 
+#       shiny::textOutput("selectedDate"),
+#       
+#       #Output a map of the world
+#       leaflet::leafletOutput("map", width = "100%", height = 400),
+#       shiny::br(),
+#       
+#       #Activities button and images that can be browsed through
+#       shiny::actionButton("show", "Show Activities", shiny::icon("search"),
+#                           style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
+#       shiny::conditionalPanel(
+#         condition = "input.show % 2 == 1",
+#         shiny::div(
+#           class = "btn-group",
+#           shiny::actionButton("back", "Back"),
+#           shiny::actionButton("forward", "Forward"),
+#       ),
+#       shiny::textOutput("hi"),
+#       shiny::br(),
+#       shiny::br(),
+#       shiny::imageOutput("image")
+#       
+#         
+#       )
+#     )
+#   )
+# )
 
 # Define server logic required for the app 
 
@@ -104,16 +171,6 @@ server <- function(input, output, session) {
   #We start with a reactive value for the weathervalues, which
   # will be changed when we select a location and a day
   weather_data_RT <- reactiveVal(NULL)
-  
-  # this outputs how to dress when clicking "How to dress?" 
-  shiny::observeEvent(input$go_clothes, {
-    output$dress <- shiny::renderImage({
-      list(src = "R/www/winter_clothes.jpg",
-           contentType = 'image/jpg',
-           width = "80%",
-           alt = "This is alternate text")
-    }, deleteFile = FALSE)
-  })
   
   #This prints the latitude and longitude of where we clicked, it is a check 
   shiny::observeEvent(input$map_click, {
@@ -168,19 +225,14 @@ server <- function(input, output, session) {
     }
     return(activities)
   })
-  
-  shiny::observeEvent(input$backy,{
-    output$hi <- shiny::renderText("backy")
-   })
-  
+
   #this shows the image when one clicks "Show image"
   shiny::observeEvent(input$show, {
     output$image <- shiny::renderImage({
-      print(images())
+      # print(images())
       list(src = images()[currentImageIndex()],
            contentType = 'image/jpg',
-           width = 400,
-           height = 400,
+           width = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
   })
@@ -194,8 +246,7 @@ server <- function(input, output, session) {
     output$image <- shiny::renderImage({
       list(src = images()[currentImageIndex()],
            contentType = 'image/png',
-           width = 400,
-           height = 400,
+           width = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
   })
@@ -209,8 +260,7 @@ server <- function(input, output, session) {
     output$image <- shiny::renderImage({
       list(src = images()[currentImageIndex()],
            contentType = 'image/png',
-           width = 400,
-           height = 400,
+           width = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
@@ -221,8 +271,8 @@ server <- function(input, output, session) {
     
     # obtain day_index from selected date
     date <- as.Date(input$date)
-    print(date)
-    print(input$map_click)
+    # print(date)
+    # print(input$map_click)
     day_index <- get_day_index(date)
     
     # obtain longitude and latitude from map_click
@@ -264,7 +314,18 @@ server <- function(input, output, session) {
     if (is.null(clothes)) {
       clothes <- c("R/www/bubbles.jpg")
     }
+    
     return(clothes)
+  })
+  
+  # this outputs how to dress when clicking "How to dress?" 
+  shiny::observeEvent(input$go_clothes, {
+    output$dress <- shiny::renderImage({
+      list(src = clothes_images()[1],
+           contentType = 'image/png',
+           width = "80%",
+           alt = "This is alternate text")
+    }, deleteFile = FALSE)
   })
 
 }
