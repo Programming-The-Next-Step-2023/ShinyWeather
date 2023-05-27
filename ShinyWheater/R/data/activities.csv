@@ -1,0 +1,29 @@
+activity,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,wind_low,wind_high,picture,description,link
+splash_in_puddles,0,35,5,20,0,0,0,35,splash_in_puddles.jpg,Splashing in puddles,https://unsplash.com/photos/eUbNeGQEh2U
+visit_museum,-15,35,5,50,0,30,0,50,visit_museum.jpg,Go to a museum,
+fly_kite,10,35,0,5,0,0,12,28,fly_kite.jpg,Fly a kite,
+park_walk,-10,30,0,5,0,50,0,20,park_walk.jpg,Walk and play the in park,https://unsplash.com/photos/ZkO8GzH0D1Q
+ice_skating,-20,0,0,0,0,25,0,30,ice_skating.jpg,Ice skating outdoors,https://unsplash.com/photos/lnCSMikKqfw
+beach_picnic,15,33,0,0,0,0,0,20,beach_picnic.jpg,Picnic on the beach,https://unsplash.com/photos/hXY98KmQWkI
+beach_swimming,25,35,0,0,0,0,0,30,beach_swimming.jpg,Swimming at the beach,https://unsplash.com/photos/R_BLOGXpsOg
+snow_angels,-15,0,0,0,10,100,0,30,snow_angels.jpg,Making snow angels,https://unsplash.com/photos/_hdO_l751fE
+snowman,-20,0,0,0,20,100,0,20,snowman.png,Making snowmen,https://unsplash.com/photos/5WIqleHzOok
+hot_chocolate_inside,-100,5,0,100,0,1000,0,100,hot_chocolate_inside.jpg,Drinking hot chocolate inside,https://unsplash.com/s/photos/cozy-inside
+puzzle_inside,-100,0,50,1000,50,1000,50,100,puzzle_inside.jpg,Make a puzzle inside,https://unsplash.com/photos/AoX_1zm1NOM
+biking,5,35,0,5,0,0,0,25,biking.jpg,Go biking!,https://unsplash.com/photos/JOnaeVoNkTQ
+sidewalk_drawing,20,35,0,5,0,0,0,25,sidewalk_drawing.jpg,Draw on the sidewalk!,https://unsplash.com/photos/erxT2em063k
+water_gun_fight,25,35,0,0,0,0,0,20,water_gun_fight.jpg,Play with water guns,https://unsplash.com/photos/JSLuw23jedY
+bake_cookies,-100,5,0,100,0,1000,0,100,bake_cookies.jpg,Bake cookies or cakes,https://unsplash.com/photos/UyEmagArOLY
+play_football,15,33,0,0,0,0,0,20,play_football.jpg,Play football,https://unsplash.com/photos/otYC4eoGJGg
+hiking,15,33,0,10,0,0,0,20,hiking.jpg,Go hiking,https://unsplash.com/photos/Hdb6SB2Mors
+park_picnic,20,35,0,0,0,0,0,30,park_picnic.jpg,Have a picnic in the park,https://unsplash.com/photos/mrXFk5CmkX4
+visit_zoo,12,35,0,5,0,0,0,25,visit_zoo.jpg,Visit the animals at the zoo,https://unsplash.com/photos/Sg_OwwU2Z9o
+visit_attraction_park,12,35,0,5,0,0,0,25,visit_attraction_park.jpg,Visit an attraction park,https://unsplash.com/photos/QLqIqIhMiNs
+visit_playground,0,35,0,5,0,20,0,25,visit_playground.jpg,Visit a playground,https://unsplash.com/photos/E0BmfKjeQrw
+insect_search,20,35,0,0,0,0,0,30,insect_search.jpg,Search for insects,https://unsplash.com/photos/13PjNBaDMcg
+snowball_fight,-15,0,0,0,10,100,0,30,snowball_fight.jpg,Snowball fight,https://unsplash.com/photos/iz2-EggSWvc
+sailing,10,35,0,5,0,0,30,28,sailing.jpg,Go sailing,https://unsplash.com/photos/ZkO8GzH0D1Q
+build_wind_chime,10,35,0,5,0,0,12,28,build_wind_chime.jpg,Build a wind chime,https://unsplash.com/photos/NwBRjju4h5s
+bubbles,10,35,0,5,0,0,12,20,bubbles.jpg,Blow bubbles,https://unsplash.com/photos/6cQHvjzmZOU
+read_inside,-100,5,0,100,0,1000,0,100,read_inside_jpg,Read books inside,https://unsplash.com/photos/u0zTce7KNlY
+pajamas,-100,5,0,100,0,1000,0,100,pajamas.jpg,Play in pajamas,https://unsplash.com/photos/KFdrrt0EXQ8
