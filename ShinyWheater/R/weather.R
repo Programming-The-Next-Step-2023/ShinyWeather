@@ -34,19 +34,19 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0) 
   weather_data <- get_weather_now(api)
   
   # temp
-  temperature_day <- round(mean(weather_data$hourly$temperature_2m[(day_index*24) + 8:(day_index*24) + 18]), 2)
+  temperature_day <- round(mean(weather_data$hourly$temperature_2m[(day_index*24 + 8):(day_index*24 + 18)]), 2)
   
   # wind
-  wind_speed_day <- round(mean(weather_data$hourly$windspeed_10m[(day_index*24) + 8:(day_index*24) + 18]), 2)
+  wind_speed_day <- round(mean(weather_data$hourly$windspeed_10m[(day_index*24 + 8):(day_index*24 + 18)]), 2)
   
   # shower
-  showers_day <- round(mean(weather_data$hourly$showers[(day_index*24) + 8:(day_index*24) + 18]), 2)
+  showers_day <- round(mean(weather_data$hourly$showers[(day_index*24 + 8):(day_index*24 + 18)]), 2)
   
   # snow
-  snow_day <- round(mean(weather_data$hourly$snowfall[(day_index*24) + 8:(day_index*24) + 18]), 2)
+  snow_day <- round(mean(weather_data$hourly$snowfall[(day_index*24 + 8):(day_index*24 + 18)]), 2)
   
   # rain
-  rain_day <- round(mean(weather_data$hourly$rain[(day_index*24) + 8:(day_index*24) + 18]), 2)
+  rain_day <- round(mean(weather_data$hourly$rain[(day_index*24 + 8):(day_index*24 + 18)]), 2)
   
   rain_day <- rain_day+showers_day
   
