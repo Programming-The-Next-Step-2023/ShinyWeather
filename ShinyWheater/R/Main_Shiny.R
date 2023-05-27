@@ -59,7 +59,10 @@ ui <- shiny::fluidPage(
                   #Input button to show the clothing advice
                   shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
                                       style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-                  shiny::imageOutput("dress")
+                  shiny::conditionalPanel(
+                    condition = "input.go_clothes % 2 == 1",
+                    shiny::uiOutput("dress_image_UI")
+                  )
                   
     ),
     shiny::column(4,
@@ -76,13 +79,17 @@ ui <- shiny::fluidPage(
                   ),
                   shiny::br(),
                   shiny::br(),
-                  shiny::imageOutput("image")
+                  shiny::conditionalPanel(
+                    condition = "input.show % 2 == 1",
+                    shiny::uiOutput("activity_image_UI")
+                  )
     ),
     shiny::column(4,
                   shiny::textOutput("hi")
            
     )
-  )
+  ),
+
 )
 
 # 
@@ -225,11 +232,12 @@ server <- function(input, output, session) {
     }
     return(activities)
   })
-
-  #this shows the image when one clicks "Show image"
-  shiny::observeEvent(input$show, {
-    output$image <- shiny::renderImage({
-      # print(images())
+  
+  # this shows the activity images when one clicks "Show activities"
+  output$activity_image_UI <- shiny::renderUI({
+    shiny::imageOutput("activity_image")
+    
+    output$activity_image <- shiny::renderImage({
       list(src = images()[currentImageIndex()],
            contentType = 'image/jpg',
            width = "80%",
@@ -319,10 +327,12 @@ server <- function(input, output, session) {
   })
   
   # this outputs how to dress when clicking "How to dress?" 
-  shiny::observeEvent(input$go_clothes, {
-    output$dress <- shiny::renderImage({
+  output$dress_image_UI <- shiny::renderUI({
+    shiny::imageOutput("dress_image")
+    
+    output$dress_image <- shiny::renderImage({
       list(src = clothes_images()[1],
-           contentType = 'image/png',
+           contentType = 'image/jpg',
            width = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
