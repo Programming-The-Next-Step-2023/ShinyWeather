@@ -41,6 +41,8 @@ ui <- shiny::fluidPage(
        shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
+      shiny::textOutput("weather_error"),
+      shiny::br(),
       shiny::strong("Temperature (°C):"),
       shiny::textOutput("Temperature"),
       shiny::strong("Amount of rain"),
@@ -295,13 +297,18 @@ server <- function(input, output, session) {
     
     # update weather and set reactive value
     weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index)
-    print(weather_data)
     weather_data_RT(weather_data)
     
     output$Temperature <- shiny::renderText({weather_data$Temp})
     output$Rain <- shiny::renderText({weather_data$Rain})
     output$Snow <- shiny::renderText({weather_data$Snow})
     output$Wind <- shiny::renderText({weather_data$Wind})
+    
+    # check if weather_data returned any errors
+    # if so, write message to screen saying retrieval was not successfull
+    if (weather_data$Error) {
+      output$weather_error <- shiny::renderText({"Error retrieving weather"})
+    }
     
   })
   

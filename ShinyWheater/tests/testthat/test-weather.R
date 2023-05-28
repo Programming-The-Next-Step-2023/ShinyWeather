@@ -25,7 +25,7 @@ test_that("the all_weather_data() gives the correct list of weather variables", 
   weather_data <- all_weather_data(day_index = 3)
   output_variables <- names(weather_data)
   
-  expected_variables = c('Temp', 'Wind','Snow', 'Rain')
+  expected_variables = c('Temp', 'Wind','Snow', 'Rain', 'Error')
   
   expect_true(all(expected_variables %in% output_variables))
 })
