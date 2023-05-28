@@ -23,51 +23,43 @@ ui <- shiny::fluidPage(
                   shiny::br(),
                   #Output which date was selected 
                   shiny::textOutput("selectedDate"),
-                  shiny::radioButtons("day_checkbox", "D", choices = c("Day", "Night"), selected="Day"),
+                  shiny::radioButtons("day_checkbox", "Select day or evening", choices = c("Day", "Evening"), selected="Day"),
                   shiny::uiOutput("background_color")
-                  # shiny::conditionalPanel(
-                  #   condition = "input.day_checkbox == 'Night'",
-                  #   shiny::tags$style(shiny::HTML(
-                  #     "body { background-color: orange }"
-                  #   ))
-                  # ),
-                  # 
-                  # shiny::conditionalPanel(
-                  #   condition = "input.day_checkbox == 'Night'",
-                  #   shiny::tags$style(shiny::HTML(
-                  #     "body { background-color: blue }"
-                  #   ))
-                  # )
-                  
     ),
     shiny::column(6,
                   #Output a map of the world
                   leaflet::leafletOutput("map", width = "100%", height = 400)
-                  
     )
   ),
   
   shiny::fluidRow(
-    shiny::column(12, 
+    shiny::column(4, 
        #Input button to show the weather 
        shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::textOutput("weather_error"),
-      shiny::br(),
-      shiny::strong("Temperature (°C):"),
-      shiny::textOutput("Temperature"),
-      shiny::strong("Amount of rain"),
-      shiny::textOutput("Rain"),
-      shiny::strong("Amount of snow"),
-      shiny::textOutput("Snow"),
-      shiny::strong("Wind Speed"),
-      shiny::textOutput("Wind"),
-      shiny::br()
-    
+    ),
+    shiny::column(4,
+                  shiny::strong("Temperature (°C): "),
+                  shiny::textOutput("Temperature"),
+                  shiny::strong("Wind Speed: "),
+                  shiny::textOutput("Wind")
+    ),
+    shiny::column(4,
+                  shiny::strong("Amount of rain: "),
+                  shiny::textOutput("Rain"),
+                  shiny::strong("Amount of snow: "),
+                  shiny::textOutput("Snow")
     )
   ),
-
+  
+  shiny::fluidRow(
+    shiny::column(12,
+                  shiny::br(),
+    )
+  ),
+  
   shiny::fluidRow(
     shiny::column(4,
                   #Input button to show the clothing advice
@@ -117,9 +109,9 @@ server <- function(input, output, session) {
   output$background_color <- shiny::renderUI({
     selected_period <- input$day_checkbox
     if (selected_period == "Day") {
-      color <- "yellow"
+      color <- "#f7f7a1"
     } else {
-      color <- "red"
+      color <- "#819cb1"
     }
     shiny::tags$style(shiny::HTML(
       paste0("body {background-color: ", color, ";}")
@@ -134,6 +126,11 @@ server <- function(input, output, session) {
   
   shiny::observe({
     input$map_click
+    session$sendCustomMessage(type = 'changeButtonColor', message = "red")
+  })
+  
+  shiny::observe({
+    input$day_checkbox
     session$sendCustomMessage(type = 'changeButtonColor', message = "red")
   })
   
