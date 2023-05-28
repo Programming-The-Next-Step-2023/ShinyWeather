@@ -195,8 +195,8 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c("R/www/bubbles.jpg")
-      description <- c("No activities found")
+      images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
+      descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
       descriptions <- result$found_descriptions
@@ -290,7 +290,7 @@ server <- function(input, output, session) {
     }
     
     # update weather and set reactive value
-    weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index)
+    weather_data <- all_weather_data(longitude = longitude, latitude = latitude, day_index = day_index, time_of_day=input$day_checkbox)
     weather_data_RT(weather_data)
     
     output$Temperature <- shiny::renderText({weather_data$Temp})
@@ -323,7 +323,7 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c("R/www/bubbles.jpg")
+      images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
       descriptions <- c("No clothes found")
     } else {
       images <- result$found_clothes
