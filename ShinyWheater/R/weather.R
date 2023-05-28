@@ -82,8 +82,9 @@ find_activities <- function (temp, rain_shower, snow, wind){
     return(NULL)
   }
   found_activities <- paste0("R/www/", newdata$picture)
+  found_descriptions <- newdata$description
   
-  return(found_activities) 
+  return(list(found_activities = found_activities, found_descriptions = found_descriptions))
 }
  
 
@@ -92,8 +93,8 @@ find_activities <- function (temp, rain_shower, snow, wind){
 find_clothing <- function (temp, rain_shower, snow){
   clothing <- read.csv("R/data/clothing.csv")
   newdata <- subset(clothing,  temp >= temp_low & temp <= temp_high)
-  newdata <- subset(clothing,  rain_shower >= rain_low & rain_shower <= rain_high)
-  newdata <- subset(clothing,  snow >= snow_low & snow <= snow_high)
+  newdata <- subset(newdata,  rain_shower >= rain_low & rain_shower <= rain_high)
+  newdata <- subset(newdata,  snow >= snow_low & snow <= snow_high)
   
   # add directory path in front of the picture filenames
   # only do this if we found any picture
@@ -101,8 +102,9 @@ find_clothing <- function (temp, rain_shower, snow){
     return(NULL)
   }
   found_clothes <- paste0("R/www/", newdata$picture)
+  found_descriptions <- newdata$description
   
-  return(found_clothes) 
+  return(list(found_clothes = found_clothes, found_descriptions = found_descriptions)) 
 }
 
 ################################################################################

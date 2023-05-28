@@ -1,15 +1,11 @@
-clothes,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,picture,link
-too_cold_pajamas,-30,-100,0,0,0,100,sun.png,
-clothes_winter_warm,0,-30,0,0,0,100,clothes_winter_warm.png,https://unsplash.com/photos/K72BTtmS87Q
-clothes_winter_light,5,10,0,0,0,100,clothes_winter_light.png,https://unsplash.com/photos/6s9I_g2B8w8
-clothes_autumn_rain,10,20,10,100,0,0,sun.png,
-clothes_autumn,10,20,0,10,0,0,clothes_autumn.png,https://unsplash.com/photos/WTgPdVgExww
-clothes_spring,20,25,0,10,0,0,sun.png,
-clothes_spring_rain,20,25,10,100,0,0,sun.png,
-clothes_summer,25,35,0,10,0,0,sun.png,
-too_warm_pajamas,35,100,0,10,0,0,sun.png,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,https://unsplash.com/photos/zxsdbx-af9Y
-summer_rain,,,,,,,,
+clothes,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,picture,description,link
+too_cold_pajamas,-100,-30,0,0,0,100,too_cold_pajamas.jpg,Clothes description,https://pixabay.com/photos/brothers-love-siblings-family-7635495/
+clothes_winter_warm,-30,5,0,0,0,100,clothes_winter_warm.jpg,Clothes description,https://unsplash.com/photos/K72BTtmS87Q
+clothes_winter_light,5,10,0,0,0,100,clothes_winter_light.jpg,Clothes description,https://unsplash.com/photos/6s9I_g2B8w8
+clothes_autumn_rain,10,20,10,100,0,0,clothes_autumn.rain.jpg,Clothes description,https://www.pexels.com/photo/girl-in-yellow-raincoat-and-yellow-boots-holding-yellow-umbrella-walking-on-gray-concrete-side-walk-3761511/
+clothes_autumn,10,20,0,10,0,0,clothes_autumn.jpg,Clothes description,https://unsplash.com/photos/WTgPdVgExww
+clothes_spring,20,25,0,10,0,0,clothes_spring.jpg,Clothes description,https://pixabay.com/photos/portrait-child-smile-face-joy-shy-1273215/
+clothes_spring_rain,20,25,10,100,0,0,clothes_autumn_rain.jpg,Clothes description,https://www.pexels.com/photo/girl-in-yellow-raincoat-and-yellow-boots-holding-yellow-umbrella-walking-on-gray-concrete-side-walk-3761511/
+clothes_summer_rain,25,35,20,100,0,0,clothes_summer_rain.jpg,Clothes description,https://unsplash.com/photos/zxsdbx-af9Y
+clothes_summer,25,35,0,10,0,0,clothes_summer.jpg,Clothes description,https://www.pexels.com/photo/happy-girl-smiling-while-riding-on-wooden-swing-of-house-6152919/
+too_warm,35,100,0,10,0,0,too_warm.jpg,Clothes description,https://www.pexels.com/photo/cheerful-asian-daughter-sitting-on-crossed-legs-of-mother-5094103/
