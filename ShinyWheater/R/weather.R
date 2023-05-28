@@ -107,7 +107,8 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0, 
 find_activities <- function (temp, rain_shower, snow, wind){
   
   # load csv file containing lower and upper threshold of the four variables for each activity
-  activities <- read.csv(system.file("R", "data", "activities.csv", package = "ShinyWeather"))
+  # activities <- read.csv(system.file("R", "data", "activities.csv", package = "ShinyWeather"))
+  activities <- read.csv("R/data/activities.csv")
   
   # for each variable, keep only the rows (activities) where the value of the variable
   # falls inside the two thresholds - that is why we subset each time
@@ -132,8 +133,9 @@ find_activities <- function (temp, rain_shower, snow, wind){
 find_clothing <- function (temp, rain_shower, snow){
   
   #load csv file containing lower and upper threshold of the three variables for each clothing style
-  clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
-  
+  # clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
+  # print(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
+  clothing <- read.csv("R/data/clothing.csv")
   # for each variable, keep only the rows (activities) where the value of the variable
   # falls inside the two thresholds - that is why we subset each time
   newdata <- subset(clothing,  temp >= temp_low & temp <= temp_high)

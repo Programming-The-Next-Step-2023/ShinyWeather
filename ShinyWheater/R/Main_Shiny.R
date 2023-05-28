@@ -11,13 +11,37 @@ ui <- shiny::fluidPage(
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
         $('#go_button').css('background-color', message);
       });
-    "))),
+    ")),
+    shiny::tags$style(shiny::HTML("
+      .instruction_box {
+        padding: 15px;
+        background-color: #FFA07A;
+        color: #000000;
+      }
+    ")),
+    shiny::tags$style(shiny::HTML("
+      .descriptions_box {
+        padding: 15px;
+        background-color: #FAA07A;
+        color: #000000;
+      }
+    "))
+  ),
   
   # Application title
   shiny::titlePanel("Shiny Weather App"),
   
   shiny::fluidRow(
     shiny::column(6,
+                  shiny::tags$div(class = "instruction_box", 
+                    shiny::p("Select a date from the calendar and a point on the map"),
+                    shiny::p("Click on Show Weather to see what the weather is like"),
+                    shiny::p("Show weather turns red when a new date or location is chosen"),
+                    shiny::p("Click on it again to see the weather for the new date or location"),
+                    shiny::p("Click on Show Clothes to see a suitable outfit for this weather"),
+                    shiny::p("Click on Show Activities to see what you can do outside on this weather")
+                  ),
+                  shiny::br(),
                   #Calendar Input with only 7 days ahead available
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
                   shiny::br(),
@@ -150,6 +174,13 @@ server <- function(input, output, session) {
   # will be changed when we select a location and a day
   weather_data_RT <- reactiveVal(NULL)
   
+  #the Images vector will be indexed according to the clicks on back and forward buttons
+  #we start with a currentImageIndex on the first image
+  currentImageIndex <- shiny::reactiveVal(1)
+  
+  # this contains the description of the current activity
+  activity_description <- shiny::reactiveVal("No description found")
+  
   #This prints the latitude and longitude of where we clicked, it is a check 
   shiny::observeEvent(input$map_click, {
     click <- input$map_click
@@ -168,10 +199,6 @@ server <- function(input, output, session) {
     paste("You have selected:", input$date)
     
   })
-  
-  #the Images vector will be indexed according to the cliks on back and foward buttons
-  #we start with a currentImageIndex on the first image
-  currentImageIndex <- shiny::reactiveVal(1)
   
   # We define a list of images, they are generated with the find_activities function
   # Because the input in the find_activities function changes when we set location and time
@@ -207,7 +234,9 @@ server <- function(input, output, session) {
   # this shows the activity images when one clicks "Show activities"
   output$activity_image_UI <- shiny::renderUI({
     
-    print(activities())
+    # save activities description to reactive value
+    activity_description(activities()$description[currentImageIndex()])
+    
     shiny::imageOutput("activity_image")
     
     output$activity_image <- shiny::renderImage({
@@ -221,11 +250,12 @@ server <- function(input, output, session) {
   
   # this shows the description of activities when one clicks "Show activities"
   output$activity_description_UI <- shiny::renderUI({
-    shiny::textOutput("activity_description")
-    
-    output$activity_description <- shiny::renderText({
-      activities()$descriptions[currentImageIndex()]
-    })
+    shiny::tags$div(class = "descriptions_box", activity_description())
+    # shiny::textOutput("activity_description")
+    # 
+    # output$activity_description <- shiny::renderText({
+    #   activities()$descriptions[currentImageIndex()]
+    # })
     
   })
 
@@ -242,9 +272,12 @@ server <- function(input, output, session) {
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
-    output$activity_description <- shiny::renderText({
-      activities()$descriptions[currentImageIndex()]
-    })
+    # save activities description to reactive value
+    activity_description(activities()$description[currentImageIndex()])
+    
+    # output$activity_description <- shiny::renderText({
+    #   activities()$descriptions[currentImageIndex()]
+    # })
   })
   
   #if forward is clicked, the current index becomes one image after or stays the same if it is the last image
@@ -260,9 +293,12 @@ server <- function(input, output, session) {
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
-    output$activity_description <- shiny::renderText({
-      activities()$descriptions[currentImageIndex()]
-    })
+    # save activities description to reactive value
+    activity_description(activities()$description[currentImageIndex()])
+    
+    # output$activity_description <- shiny::renderText({
+    #   activities()$descriptions[currentImageIndex()]
+    # })
     
   })
   
@@ -345,8 +381,6 @@ server <- function(input, output, session) {
   output$dress_image_UI <- shiny::renderUI({
     shiny::imageOutput("dress_image")
     
-    print(clothes()$images)
-    
     output$dress_image <- shiny::renderImage({
       list(src = clothes()$images[1],
            contentType = 'image/jpg',
@@ -356,13 +390,19 @@ server <- function(input, output, session) {
   })
   
   output$clothing_description_UI <- shiny::renderUI({
-    shiny::textOutput("clothing_description")
     
-    print(clothes()$description)
-    
-    output$clothing_description <- shiny::renderText({
-      clothes()$description[1]
-    })
+    tags$div(class = "descriptions_box", clothes()$description[1])
+    # shiny::textOutput("clothing_description")
+    # 
+    # output$clothing_description <- shiny::renderText({
+    #   
+    #   print(clothes()$description[1])
+    #   clothes()$description[1]
+    #   # shiny::tags$div(class = "descriptions_box",
+    #   #                 clothes()$description[1]
+    #   # )
+    #   
+    # })
   })
 
 }
