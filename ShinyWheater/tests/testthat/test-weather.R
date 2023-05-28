@@ -16,9 +16,17 @@ test_that("the weather_api() gives error if input is out of bounds", {
 
 
 # Tests for all_weather_data()
-test_that("the all_weather_data() gives error if input is out of bounds", {
+test_that("the all_weather_data() gives error if day_index is out of bounds", {
   expect_error(all_weather_data(day_index = -1))
   expect_error(all_weather_data(day_index = 8))
+})
+
+test_that("the all_weather_data() gives error if time_of_day is incorrect", {
+  
+  # day and night should be written with capital first letter
+  expect_error(all_weather_data(time_of_day = "day"))
+  expect_error(all_weather_data(time_of_day = "night"))
+  expect_error(all_weather_data(time_of_day = "wrong_input"))
 })
 
 test_that("the all_weather_data() gives the correct list of weather variables", {
@@ -28,4 +36,38 @@ test_that("the all_weather_data() gives the correct list of weather variables", 
   expected_variables = c('Temp', 'Wind','Snow', 'Rain', 'Error')
   
   expect_true(all(expected_variables %in% output_variables))
+})
+
+
+# Tests for find_clothing()
+test_that("the find_clothing() gives the correct list of variables", {
+  clothes <- find_clothing(10, 10, 0)
+  output_variables <- names(clothes)
+  
+  expected_variables = c('found_clothes', 'found_descriptions')
+  
+  expect_true(all(expected_variables %in% output_variables))
+})
+
+test_that("the find_clothing() gives NULL if no clothes are found", {
+  clothes <- find_clothing(-100, -100, -100)
+  
+  expect_null(clothes)
+})
+
+
+# Tests for find_activities()
+test_that("the find_clothing() gives the correct list of variables", {
+  activities <- find_activities(10, 0, 0, 0)
+  output_variables <- names(activities)
+  
+  expected_variables = c('found_activities', 'found_descriptions')
+  
+  expect_true(all(expected_variables %in% output_variables))
+})
+
+test_that("the find_activities() gives NULL if no activities are found", {
+  activities <- find_activities(-100, -100, -100, -100)
+  
+  expect_null(activities)
 })
