@@ -2,6 +2,10 @@ source("R/weather.R")
 
 ui <- shiny::fluidPage(
   
+  # shiny::tags$style(shiny::HTML(
+  #   "body { background-color: yellow }"
+  # )),
+  
   shiny::tags$head(
     shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
@@ -18,7 +22,22 @@ ui <- shiny::fluidPage(
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
                   shiny::br(),
                   #Output which date was selected 
-                  shiny::textOutput("selectedDate")
+                  shiny::textOutput("selectedDate"),
+                  shiny::radioButtons("day_checkbox", "D", choices = c("Day", "Night"), selected="Day"),
+                  shiny::uiOutput("background_color")
+                  # shiny::conditionalPanel(
+                  #   condition = "input.day_checkbox == 'Night'",
+                  #   shiny::tags$style(shiny::HTML(
+                  #     "body { background-color: orange }"
+                  #   ))
+                  # ),
+                  # 
+                  # shiny::conditionalPanel(
+                  #   condition = "input.day_checkbox == 'Night'",
+                  #   shiny::tags$style(shiny::HTML(
+                  #     "body { background-color: blue }"
+                  #   ))
+                  # )
                   
     ),
     shiny::column(6,
@@ -93,6 +112,19 @@ ui <- shiny::fluidPage(
 
 # Define server logic required for the app 
 server <- function(input, output, session) {
+  
+  # set background color
+  output$background_color <- shiny::renderUI({
+    selected_period <- input$day_checkbox
+    if (selected_period == "Day") {
+      color <- "yellow"
+    } else {
+      color <- "red"
+    }
+    shiny::tags$style(shiny::HTML(
+      paste0("body {background-color: ", color, ";}")
+    ))
+  })
   
   # change button colors when they have been clicked
   shiny::observe({
@@ -235,6 +267,10 @@ server <- function(input, output, session) {
       activities()$descriptions[currentImageIndex()]
     })
     
+  })
+  
+  shiny::observeEvent(input$day_checkbox, {
+    print(input$day_checkbox)
   })
 
   #when Go button is pressed, we show weather variables for day and location 
