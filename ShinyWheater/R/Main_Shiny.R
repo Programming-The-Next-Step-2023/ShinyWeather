@@ -17,36 +17,38 @@ ui <- shiny::fluidPage(
         padding: 15px;
         background-color: #FFA07A;
         color: #000000;
+        border-radius: 10px;
       }
     ")),
     shiny::tags$style(shiny::HTML("
       .descriptions_box {
-        padding: 15px;
-        background-color: #FAA07A;
+        padding: 5px;
+        background-color: #fafadc;
         color: #000000;
+        border-radius: 10px;
       }
-    "))
+    ")),
   ),
   
   # Application title
-  shiny::titlePanel("Shiny Weather App"),
+  shiny::titlePanel(shiny::h1("Shiny Weather App", align = "center")),
   
   shiny::fluidRow(
     shiny::column(6,
                   shiny::tags$div(class = "instruction_box", 
-                    shiny::p("Select a date from the calendar and a point on the map"),
-                    shiny::p("Click on Show Weather to see what the weather is like"),
-                    shiny::p("Show weather turns red when a new date or location is chosen"),
-                    shiny::p("Click on it again to see the weather for the new date or location"),
-                    shiny::p("Click on Show Clothes to see a suitable outfit for this weather"),
-                    shiny::p("Click on Show Activities to see what you can do outside on this weather")
+                    shiny::tags$p("Select a ", shiny::tags$b("date"),"from the calendar and a" , shiny::tags$b("point"),"on the map."),
+                    shiny::tags$p('Click on', shiny::tags$i("Show Weather"), 'to see what the weather is like.'),
+                    shiny::tags$p(shiny::tags$i("Show weather"), 'turns red when a new date or location is chosen.'),
+                    shiny::p("Click on it again to see the weather for the new date or location."),
+                    shiny::tags$p('Click on',shiny::tags$i("Show Clothes"), 'to see a suitable outfit for this weather.'),
+                    shiny::tags$p('Click on', shiny::tags$i("Show Activities"), ' to see what you can do outside on this weather.')
                   ),
                   shiny::br(),
                   #Calendar Input with only 7 days ahead available
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
-                  shiny::br(),
                   #Output which date was selected 
                   shiny::textOutput("selectedDate"),
+                  shiny::br(),
                   shiny::radioButtons("day_checkbox", "Select day or evening", choices = c("Day", "Evening"), selected="Day"),
                   shiny::uiOutput("background_color")
     ),
@@ -67,13 +69,13 @@ ui <- shiny::fluidPage(
     shiny::column(4,
                   shiny::strong("Temperature (°C): "),
                   shiny::textOutput("Temperature"),
-                  shiny::strong("Wind Speed: "),
+                  shiny::strong("Wind Speed (km/h): "),
                   shiny::textOutput("Wind")
     ),
     shiny::column(4,
-                  shiny::strong("Amount of rain: "),
+                  shiny::strong("Amount of rain (mm): "),
                   shiny::textOutput("Rain"),
-                  shiny::strong("Amount of snow: "),
+                  shiny::strong("Amount of snow (mm): "),
                   shiny::textOutput("Snow")
     )
   ),
@@ -89,41 +91,48 @@ ui <- shiny::fluidPage(
                   #Input button to show the clothing advice
                   shiny::actionButton("go_clothes", "How to dress?", shiny::icon("star"), 
                                       style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                  shiny::br(),
+                  shiny::br(),
                   shiny::conditionalPanel(
                     condition = "input.go_clothes % 2 == 1",
-                    shiny::br(),
-                    shiny::uiOutput("clothing_description_UI"),
-                    shiny::br(),
-                    shiny::uiOutput("dress_image_UI")
+                    shiny::uiOutput("dress_image_UI"),
+                    shiny::div(style = "margin-top: -70px"),
+                    shiny::uiOutput("clothing_description_UI")
                   )
                   
     ),
-    shiny::column(4,
+    shiny::column(8,
                   #Activities button and images that can be browsed through
                   shiny::actionButton("show", "Show Activities", shiny::icon("search"),
                                       style="color: #fff; background-color: #7bc96f; border-color: #5ca748"),
-                  shiny::conditionalPanel(
-                      condition = "input.show % 2 == 1",
-                      shiny::div(
-                        class = "btn-group",
-                        shiny::actionButton("back", "Back"),
-                        shiny::actionButton("forward", "Forward"),
-                      )
-                  ),
                   shiny::br(),
                   shiny::br(),
                   shiny::conditionalPanel(
                     condition = "input.show % 2 == 1",
                     shiny::uiOutput("activity_image_UI")
-                  )
-    ),
-    shiny::column(4,
+                  ),
+                  shiny::div(style = "margin-top: -70px"),
                   shiny::conditionalPanel(
                     condition = "input.show % 2 == 1",
                     shiny::uiOutput("activity_description_UI")
-                  )
-    )
-  ),
+                  ),
+                  shiny::conditionalPanel(
+                    condition = "input.show % 2 == 1",
+                    shiny::div(
+                      class = "btn-group",
+                      shiny::actionButton("back", "Back"),
+                      shiny::actionButton("forward", "Forward"),
+                    )
+                  ),
+      )
+    ),
+  #   shiny::column(4,
+  #                 shiny::conditionalPanel(
+  #                   condition = "input.show % 2 == 1",
+  #                   shiny::uiOutput("activity_description_UI")
+  #                 )
+  #   )
+  # ),
 )
 
 # Define server logic required for the app 
@@ -160,7 +169,7 @@ server <- function(input, output, session) {
   
   shiny::observe({
     input$go_button
-    session$sendCustomMessage(type = 'changeButtonColor', message = "blue")
+    session$sendCustomMessage(type = 'changeButtonColor', message = "#337ab7")
   })
   
   # This outputs the map with default to Amsterdam
@@ -242,7 +251,7 @@ server <- function(input, output, session) {
     output$activity_image <- shiny::renderImage({
       list(src = activities()$images[currentImageIndex()],
            contentType = 'image/jpg',
-           width = "80%",
+           height = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
@@ -268,7 +277,7 @@ server <- function(input, output, session) {
     output$image <- shiny::renderImage({
       list(src = activities()$images[currentImageIndex()],
            contentType = 'image/png',
-           width = "80%",
+           height = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
@@ -289,7 +298,7 @@ server <- function(input, output, session) {
     output$image <- shiny::renderImage({
       list(src = activities()$images[currentImageIndex()],
            contentType = 'image/png',
-           width = "80%",
+           height = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
     
@@ -384,7 +393,7 @@ server <- function(input, output, session) {
     output$dress_image <- shiny::renderImage({
       list(src = clothes()$images[1],
            contentType = 'image/jpg',
-           width = "80%",
+           height = "80%",
            alt = "This is alternate text")
     }, deleteFile = FALSE)
   })
