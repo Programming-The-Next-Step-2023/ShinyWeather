@@ -54,7 +54,7 @@ Instruction. The orange text field contains instructions of how to use the app.
 Day/Evening Mode. Under the calendar there are two radio buttons called "Day" and "Evening"
 When "Day" is selected, the app goes into the yellow mode and the data is displayed for the time of the day 
 between 8 a.m. and 6 p.m. and when "Evening" is selected, the app does into the dark blue mode and the data is 
-displayed for the time of the day between 6 p.m. and 12 p.m.
+displayed for the time of the day between 6 p.m. and 12 a.m.
 
 Show Weather Button. When the user clicks this button, four weather variables are displayed on the screen, based on the day and location selected.When a new location and date is selected, this button turns red.If it is clicked again, the new values are displayed.
 

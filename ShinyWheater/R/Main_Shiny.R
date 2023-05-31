@@ -27,7 +27,7 @@ ui <- shiny::fluidPage(
         color: #000000;
         border-radius: 10px;
       }
-    ")),
+    "))
   ),
   
   # Application title
@@ -49,7 +49,7 @@ ui <- shiny::fluidPage(
                   #Output which date was selected 
                   shiny::textOutput("selectedDate"),
                   shiny::br(),
-                  shiny::radioButtons("day_checkbox", "Select day or evening", choices = c("Day", "Evening"), selected="Day"),
+                  shiny::radioButtons("day_checkbox", "Select day or evening", choices = list("Day (8 a.m - 6 p.m.)" = "Day", "Evening (6 p.m. - 12 a.m.)" = "Evening"), selected="Day"),
                   shiny::uiOutput("background_color")
     ),
     shiny::column(6,
@@ -231,7 +231,8 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
+      # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
+      images <- "R/www/first_click.png"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -368,7 +369,8 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
+      # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
+      images <- "R/www/first_click.png"
       descriptions <- c("No clothes found")
     } else {
       images <- result$found_clothes
