@@ -2,10 +2,6 @@ source("R/weather.R")
 
 ui <- shiny::fluidPage(
   
-  # shiny::tags$style(shiny::HTML(
-  #   "body { background-color: yellow }"
-  # )),
-  
   shiny::tags$head(
     shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
@@ -30,8 +26,18 @@ ui <- shiny::fluidPage(
     "))
   ),
   
-  # Application title
-  shiny::titlePanel(shiny::h1("Shiny Weather App", align = "center")),
+
+  
+  shiny::titlePanel(
+    shiny::fluidRow(
+      shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/9/95/Cartoon_cloud.svg")),
+      shiny::column(8, shiny::h1("Shiny Weather App", align = "center")), 
+      shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/MeteoSet_Day_%28nbg%29.svg/1024px-MeteoSet_Day_%28nbg%29.svg.png"))
+    )
+    
+  ),
+  
+  # shiny::titlePanel(shiny::h1("Shiny Weather App", align = "center")),
   
   shiny::fluidRow(
     shiny::column(6,
@@ -46,8 +52,6 @@ ui <- shiny::fluidPage(
                   shiny::br(),
                   #Calendar Input with only 7 days ahead available
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
-                  #Output which date was selected 
-                  shiny::textOutput("selectedDate"),
                   shiny::br(),
                   shiny::radioButtons("day_checkbox", "Select day or evening", choices = list("Day (8 a.m - 6 p.m.)" = "Day", "Evening (6 p.m. - 12 a.m.)" = "Evening"), selected="Day"),
                   shiny::uiOutput("background_color")
@@ -138,6 +142,14 @@ ui <- shiny::fluidPage(
 # Define server logic required for the app 
 server <- function(input, output, session) {
   
+  # output$title_image <- renderImage({
+  #   # return a list containing the filename
+  #   list(src = "R/www/sun.png", contentType = 'image/jpg',
+  #        height = 10,
+  #        width = 10,
+  #        alt = "This is alternate text")
+  # }, deleteFile = FALSE)
+
   # set background color
   output$background_color <- shiny::renderUI({
     selected_period <- input$day_checkbox
@@ -198,17 +210,6 @@ server <- function(input, output, session) {
     leaflet::addCircleMarkers(lng = lng, lat = lat, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
   })
   
-  #This outputs a text saying which date was selected 
-  output$selectedDate <- shiny::renderText({
-    
-    # can do some logic with the date here...
-    # print(input$date)
-    # print(input$date + 1)
-    
-    paste("You have selected:", input$date)
-    
-  })
-  
   # We define a list of images, they are generated with the find_activities function
   # Because the input in the find_activities function changes when we set location and time
   # We set images to be a reactive function
@@ -225,14 +226,14 @@ server <- function(input, output, session) {
     if (!is.null(weather_data_RT())) {
       
       #look for activities
-      result <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind)
+      result <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind, time_of_day=input$day_checkbox)
     }
     
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
-      images <- "R/www/first_click.png"
+      # images <- c(system.file("R", "www", "first_click_1.png", package = "ShinyWeather"))
+      images <- "R/www/first_click_1.png"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -370,7 +371,7 @@ server <- function(input, output, session) {
     # if not, put a default photo
     if (is.null(result)) {
       # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
-      images <- "R/www/first_click.png"
+      images <- "R/www/first_click_2.png"
       descriptions <- c("No clothes found")
     } else {
       images <- result$found_clothes
@@ -422,17 +423,3 @@ server <- function(input, output, session) {
 get_day_index <- function(date) {
   return(as.integer(date - Sys.Date()))
 }
-
-#' runShinyWeather
-#' 
-#' This is the function that can be run by the user to open the ShinyWeather App
-#' 
-#' @export 
-#'
-#' @examples runShinyWeather()
-#' 
-runShinyWeather <- function() {
-  shiny::shinyApp(ui = ui, server = server)
-}
-runShinyWeather()
-
