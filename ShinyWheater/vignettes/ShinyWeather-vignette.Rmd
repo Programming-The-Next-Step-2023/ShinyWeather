@@ -1,0 +1,75 @@
+---
+title: "ShinyWeather-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ShinyWeather-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo = FALSE}
+library(ShinyWeather)
+```
+
+
+```{r, fig.cap="Screenshot Example", out.width = "80%", echo = FALSE}
+knitr::include_graphics("www/app.jpeg") 
+```
+
+# Description
+
+Description of the purpose of the app
+
+# Running the app
+
+## Installation
+
+Description of installation of app
+
+## How to run the App
+
+Explain how the shiny app should be started
+
+
+# Features
+
+"Showcase the features of the app with screenshots and explain all the input fields"
+
+Calendar. Under "Select a date" there is a calendar where the user can click to select a day.
+The dates availanle are the current day and six consecutive days in the future.
+
+Map. The map field contains a map of the world. The user can zoom in and out on the map using the plus and minus signes.
+The map's default location is Amsterdam, the Netherlands.A green circle appears on the map at the current selected location.
+The user can click on the map to select a new location. 
+
+Instruction. The orange text field contains instructions of how to use the app.
+
+Day/Evening Mode. Under the calendar there are two radio buttons called "Day" and "Evening"
+When "Day" is selected, the app goes into the yellow mode and the data is displayed for the time of the day 
+between 8 a.m. and 6 p.m. and when "Evening" is selected, the app does into the dark blue mode and the data is 
+displayed for the time of the day between 6 p.m. and 12 a.m.
+
+Show Weather Button. When the user clicks this button, four weather variables are displayed on the screen, based on the day and location selected.When a new location and date is selected, this button turns red.If it is clicked again, the new values are displayed.
+
+Show Clothes Button.When weather has been displayed, the user can click "Show Clothes" and a pictue of an outfit will be displayed.
+The picture is selected talking into account temperature, rain and snow. Under the picture, there will be a text description.
+
+Show Activities Button.When weather has been displayed, the user can click "Show Activities" and a pictue of one activity will be displayed on the screen. Under the picture, there will be a text description.
+The picture is selected talking into account temperature, rain, snow and wind.
+
+Back and Forward Buttons.Under the activity image there are two buttons: "Back" and "Forward". The user can click on these buttons to browse to a collection of activities suitable for the current weather.
+
+
+
+
+# Conclusion
+
+Wrapping up the report
+
