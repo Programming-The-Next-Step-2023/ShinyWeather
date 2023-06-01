@@ -23,33 +23,42 @@ ui <- shiny::fluidPage(
   #     }
   #   });
   # ")),
+    
+  # add a custom message handler that will get temperature data from the server
   shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
         document.getElementById('tempBar').style.width = temp + '%';
       });
     ")),
   
+  # add a custom message handler that will get rain data from the server
   shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('updateRain', function(rain) {
         document.getElementById('rainBar').style.width = rain + '%';
       });
     ")),
+  
+  # add a custom message handler that will get snow data from the server
   shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('updateSnow', function(snow) {
         document.getElementById('snowBar').style.width = snow + '%';
       });
     ")),
+  
+  # add a custom message handler that will get wind data from the server
   shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('updateWind', function(wind) {
         document.getElementById('windBar').style.width = wind + '%';
       });
     ")),
   
+  # add a custom message handler that will change the Show weather color
     shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
         $('#go_button').css('background-color', message);
       });
     ")),
+  # add an orange box around the instructions
     shiny::tags$style(shiny::HTML("
       .instruction_box {
         padding: 15px;
@@ -58,6 +67,8 @@ ui <- shiny::fluidPage(
         border-radius: 10px;
       }
     ")),
+  
+  # add a light yellow box around the descriptions
     shiny::tags$style(shiny::HTML("
       .descriptions_box {
         padding: 5px;
@@ -69,7 +80,7 @@ ui <- shiny::fluidPage(
   ),
   
 
-  
+  #the title panel contains a fluidrow such that the cloud and sun can be placed next to the title
   shiny::titlePanel(
     shiny::fluidRow(
       shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/9/95/Cartoon_cloud.svg")),
@@ -79,8 +90,7 @@ ui <- shiny::fluidPage(
     
   ),
   
-  # shiny::titlePanel(shiny::h1("Shiny Weather App", align = "center")),
-  
+  #first row containing instructions, callendar and map
   shiny::fluidRow(
     shiny::column(6,
                   shiny::tags$div(class = "instruction_box", 
@@ -104,68 +114,67 @@ ui <- shiny::fluidPage(
     )
   ),
   
+  #second row containing Show Weather button, weather forecast values and weather progress bars
   shiny::fluidRow(
     shiny::column(6, 
        #Input button to show the weather 
        shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
-      shiny::textOutput("weather_error"),
-      # shiny::tags$div(id = "tempDisplay", 
-      #                 shiny::tags$p("Too cold"),
-      #                 shiny::tags$progress(id = "tempBar",class = "warm", value = -10, max = 45),
-      #                 shiny::tags$p("Too hot")
       
-      # 
-      # shiny::div(id = "tempContainer", 
-      #     style = "background-color: lightgrey; width: 70%; height: 20px;", 
-      #     shiny::div(id = "tempBar", 
-      #         style = "background-color: blue; height: 100%; width: 0;"),
-      #     
-      #                 
-      # )
+      # Error in case data cannot be obtained
+      shiny::textOutput("weather_error"),
+   
       shiny::tags$p(shiny::tags$b("Temperature"), style = "text-align: center;"),
+      
+      # Progress bar for temperature 
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
-          span("Cold"),
-          div(id = "tempContainer", 
-              style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
-              div(id = "tempBar", 
-                  style = "background-color: red; height: 100%; width: 0;")
+          shiny::span("Too Cold"),
+          shiny::div(id = "tempContainer", 
+              style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+              shiny::div(id = "tempBar", 
+                  style = "background-color: #d996e9; height: 100%; width: 0;")
           ),
-          span("Hot")
+          shiny::span("Too Hot")
       ),
       shiny::br(),
+      
+      # Progress bar for rain
       shiny::tags$p(shiny::tags$b("Rain"), style = "text-align: center;"),
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
-                 span("No rain"),
-                 div(id = "rainContainer", 
-                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
-                     div(id = "rainBar", 
-                         style = "background-color: red; height: 100%; width: 0;")
+                 shiny::span("No rain "),
+                 shiny::div(id = "rainContainer", 
+                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "rainBar", 
+                         style = "background-color: #54e4f8; height: 100%; width: 0;")
                  ),
-                 span("Lots of rain")
+                 shiny::span("Lots of rain")
       ),
       shiny::br(),
+      
+      # Progress bar for snow
       shiny::tags$p(shiny::tags$b("Snow"), style = "text-align: center;"),
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
-                 span("No snow"),
-                 div(id = "snowContainer", 
-                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
-                     div(id = "snowBar", 
-                         style = "background-color: red; height: 100%; width: 0;")
+                 shiny::span("No snow "),
+                 shiny::div(id = "snowContainer", 
+                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "snowBar", 
+                         style = "background-color: #e5f7fa; height: 100%; width: 0;")
                  ),
-                 span("Lots of snow")
+                 shiny::span("Lots of snow")
       ),
       shiny::br(),
+      
+      # Progress bar for wind
       shiny::tags$p(shiny::tags$b("Wind"), style = "text-align: center;"),
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
-                 span("No wind"),
-                 div(id = "windContainer", 
-                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
-                     div(id = "windBar", 
-                         style = "background-color: red; height: 100%; width: 0;")
+                 shiny::span("No wind "),
+                 shiny::div(id = "windContainer", 
+                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "windBar", 
+                         style = "background-color: #aff6e6; height: 100%; width: 0;")
                  ),
-                 span("Lots of wind")
+                 shiny::span("Lots of wind")
       )
     ),
     shiny::column(3,
@@ -182,6 +191,7 @@ ui <- shiny::fluidPage(
     )
   ),
   
+  #third row containing How to dress? button, Show Activities button and image and descriptions
   shiny::fluidRow(
     shiny::column(12,
                   shiny::br(),
@@ -228,29 +238,12 @@ ui <- shiny::fluidPage(
                   ),
       )
     ),
-  #   shiny::column(4,
-  #                 shiny::conditionalPanel(
-  #                   condition = "input.show % 2 == 1",
-  #                   shiny::uiOutput("activity_description_UI")
-  #                 )
-  #   )
-  # ),
 )
 
 # Define server logic required for the app 
 server <- function(input, output, session) {
-  
-  # output$title_image <- renderImage({
-  #   # return a list containing the filename
-  #   list(src = "R/www/sun.png", contentType = 'image/jpg',
-  #        height = 10,
-  #        width = 10,
-  #        alt = "This is alternate text")
-  # }, deleteFile = FALSE)
-  
- 
 
-  # set background color
+  # set background color depending on wether Day or Evening is Selected
   output$background_color <- shiny::renderUI({
     selected_period <- input$day_checkbox
     if (selected_period == "Day") {
@@ -517,21 +510,44 @@ server <- function(input, output, session) {
     # })
   })
 
+  #send the temperature data to the tempbar
   observe({
-    session$sendCustomMessage("updateTemperature", weather_data_RT()$Temp)
+    session$sendCustomMessage("updateTemperature", normalize_value(weather_data_RT()$Temp, -15, 40))
   })
   
+  #send the rain data to the rainbar
   observe({
-    session$sendCustomMessage("updateRain", weather_data_RT()$Rain)
+    session$sendCustomMessage("updateRain", normalize_value(weather_data_RT()$Rain, 0, 100))
   })
   
+  #send the snow data to the snowbar
   observe({
-    session$sendCustomMessage("updateSnow", weather_data_RT()$Snow)
+    session$sendCustomMessage("updateSnow", normalize_value(weather_data_RT()$Snow, 0, 100))
   })
   
+  #send the wind data to the windbar
   observe({
-    session$sendCustomMessage("updateWind", weather_data_RT()$Wind)
+    session$sendCustomMessage("updateWind", normalize_value(weather_data_RT()$Wind, 0, 60))
   })
+}
+
+#normalize a value between 0 and 100 where the value is located between 
+#value_min and value_max for correctly showing on the bars
+#this is because the bars are ranged between 0 and 100
+normalize_value <- function(value, value_min, value_max) {
+  
+  #make sure value that value is not smaller than value_min and not larger
+  #than value-max
+  value <- max(value, value_min)
+  value <- min(value, value_max)
+  
+  #first normalize to be between 0 and 1
+  value <- (value - value_min) / (value_max - value_min)
+  
+  #secondly, scale to be between 0 and 100
+  value <- value * 100
+  
+  return(value)
 }
 
 # Takes a date object and gives a day_index based on number of days different to current date
