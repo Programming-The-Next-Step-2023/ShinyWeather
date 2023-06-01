@@ -26,5 +26,6 @@ sailing,10,35,0,5,0,0,20,40,sailing.jpg,Go sailing if you live close to a body o
 build_wind_chime,10,35,0,5,0,0,12,28,build_wind_chime.jpg,Build a wind chime and listen to it move in the wind.,https://unsplash.com/photos/NwBRjju4h5s
 bubbles,10,35,0,5,0,0,12,20,bubbles.jpg,Blow bubbles and look how pretty they are in the air.,https://unsplash.com/photos/6cQHvjzmZOU
 read_inside,-100,5,0,100,0,1000,0,100,read_inside.jpg,Read books inside while the weather outside is a little harsh.,https://unsplash.com/photos/u0zTce7KNlY
-pajamas,-100,5,0,100,0,1000,0,100,pajamas.jpg,"Play in pajamas, it's a little too cold to play outside now.",https://unsplash.com/photos/KFdrrt0EXQ8
+too_cold_pajamas,-100,5,0,100,0,1000,0,100,too_cold_pajama.jpg,"Play in pajamas, it's a little too cold to play outside now.",https://unsplash.com/photos/KFdrrt0EXQ8
 photography,5,35,0,0,0,0,0,100,photography.jpg,Go out and practice your photograpy skills!,https://www.pexels.com/photo/photo-of-kid-wearing-knitted-sweater-3932975/
+too_warm,30,50,0,5,0,0,0,100,too_warm_pajama.jpg,It's quite warm outside. How about a lazy pajama day?,
