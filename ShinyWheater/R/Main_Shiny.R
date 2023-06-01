@@ -2,7 +2,32 @@ source("R/weather.R")
 
 ui <- shiny::fluidPage(
   
+  
   shiny::tags$head(
+
+  #   shiny::tags$style(shiny::HTML("
+  #     .cold { background-color: blue; }
+  #     .warm { background-color: orange; }
+  #     .hot { background-color: red; }
+  #   ")),
+    
+  #   shiny::tags$script(shiny::HTML("
+  #   Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
+  #     document.getElementById('tempBar').value = temp;
+  #     if(temp < 10) {
+  #       tempBar.className = 'cold';
+  #     } else if(temp > 30) {
+  #       tempBar.className = 'warm';
+  #     } else {
+  #       tempBar.className = 'hot';
+  #     }
+  #   });
+  # ")),
+  shiny::tags$script(shiny::HTML("
+      Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
+        document.getElementById('tempBar').style.width = temp + '%';
+      });
+    ")),
     shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
         $('#go_button').css('background-color', message);
@@ -63,20 +88,43 @@ ui <- shiny::fluidPage(
   ),
   
   shiny::fluidRow(
-    shiny::column(4, 
+    shiny::column(6, 
        #Input button to show the weather 
        shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::textOutput("weather_error"),
+      # shiny::tags$div(id = "tempDisplay", 
+      #                 shiny::tags$p("Too cold"),
+      #                 shiny::tags$progress(id = "tempBar",class = "warm", value = -10, max = 45),
+      #                 shiny::tags$p("Too hot")
+      
+      # 
+      # shiny::div(id = "tempContainer", 
+      #     style = "background-color: lightgrey; width: 70%; height: 20px;", 
+      #     shiny::div(id = "tempBar", 
+      #         style = "background-color: blue; height: 100%; width: 0;"),
+      #     
+      #                 
+      # )
+      shiny::tags$p("Temperature"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+          span("Cold"),
+          div(id = "tempContainer", 
+              style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
+              div(id = "tempBar", 
+                  style = "background-color: red; height: 100%; width: 0;")
+          ),
+          span("Hot")
+      )
     ),
-    shiny::column(4,
+    shiny::column(3,
                   shiny::strong("Temperature (°C): "),
                   shiny::textOutput("Temperature"),
                   shiny::strong("Wind Speed (km/h): "),
                   shiny::textOutput("Wind")
     ),
-    shiny::column(4,
+    shiny::column(3,
                   shiny::strong("Amount of rain (mm): "),
                   shiny::textOutput("Rain"),
                   shiny::strong("Amount of snow (mm): "),
@@ -149,6 +197,8 @@ server <- function(input, output, session) {
   #        width = 10,
   #        alt = "This is alternate text")
   # }, deleteFile = FALSE)
+  
+ 
 
   # set background color
   output$background_color <- shiny::renderUI({
@@ -417,6 +467,9 @@ server <- function(input, output, session) {
     # })
   })
 
+  observe({
+    session$sendCustomMessage("updateTemperature", weather_data_RT()$Temp)
+  })
 }
 
 # Takes a date object and gives a day_index based on number of days different to current date

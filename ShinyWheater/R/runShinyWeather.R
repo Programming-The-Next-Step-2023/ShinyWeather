@@ -11,3 +11,4 @@ runShinyWeather <- function() {
   shiny::shinyApp(ui = ui, server = server)
 }
 runShinyWeather()
+
