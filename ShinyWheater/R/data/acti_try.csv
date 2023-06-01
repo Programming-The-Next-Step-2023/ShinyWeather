@@ -1,5 +1,0 @@
-activity,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,wind_low,wind_high,picture,description,link
-splash_in_puddles,0,35,5,20,0,0,0,35,splash_in_puddles.jpg,Splashing in puddles,
-visit_museum,-15,35,5,50,0,30,0,50,visit_museum.jpg,Museum,
-fly_kite,10,35,0,5,0,0,12,28,fly_kite.jpg,Kite,
-bubbles,10,35,0,5,0,0,12,20,bubbles.jpg,Bubbles,
