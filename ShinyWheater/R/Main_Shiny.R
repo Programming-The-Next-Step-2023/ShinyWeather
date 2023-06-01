@@ -117,21 +117,34 @@ ui <- shiny::fluidPage(
   #second row containing Show Weather button, weather forecast values and weather progress bars
   shiny::fluidRow(
     shiny::column(6, 
+                  
        #Input button to show the weather 
        shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
+      shiny::br(),
       
       # Error in case data cannot be obtained
       shiny::textOutput("weather_error"),
-   
+    
+      shiny::strong("Temperature (°C): "),
+      shiny::textOutput("Temperature"),
+      shiny::strong("Wind Speed (km/h): "),
+      shiny::textOutput("Wind"),
+      shiny::strong("Amount of rain (mm): "),
+      shiny::textOutput("Rain"),
+      shiny::strong("Amount of snow (mm): "),
+      shiny::textOutput("Snow")
+    ),
+    
+    shiny::column(6,
       shiny::tags$p(shiny::tags$b("Temperature"), style = "text-align: center;"),
       
       # Progress bar for temperature 
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
-          shiny::span("Too Cold"),
+          shiny::span("Too cold"),
           shiny::div(id = "tempContainer", 
-              style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+              style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
               shiny::div(id = "tempBar", 
                   style = "background-color: #d996e9; height: 100%; width: 0;")
           ),
@@ -144,7 +157,7 @@ ui <- shiny::fluidPage(
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
                  shiny::span("No rain "),
                  shiny::div(id = "rainContainer", 
-                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
                      shiny::div(id = "rainBar", 
                          style = "background-color: #54e4f8; height: 100%; width: 0;")
                  ),
@@ -157,7 +170,7 @@ ui <- shiny::fluidPage(
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
                  shiny::span("No snow "),
                  shiny::div(id = "snowContainer", 
-                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
                      shiny::div(id = "snowBar", 
                          style = "background-color: #e5f7fa; height: 100%; width: 0;")
                  ),
@@ -170,24 +183,12 @@ ui <- shiny::fluidPage(
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
                  shiny::span("No wind "),
                  shiny::div(id = "windContainer", 
-                     style = "background-color: lightgray; width: 200px; height: 20px; margin: 0 10px;", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
                      shiny::div(id = "windBar", 
                          style = "background-color: #aff6e6; height: 100%; width: 0;")
                  ),
                  shiny::span("Lots of wind")
       )
-    ),
-    shiny::column(3,
-                  shiny::strong("Temperature (°C): "),
-                  shiny::textOutput("Temperature"),
-                  shiny::strong("Wind Speed (km/h): "),
-                  shiny::textOutput("Wind")
-    ),
-    shiny::column(3,
-                  shiny::strong("Amount of rain (mm): "),
-                  shiny::textOutput("Rain"),
-                  shiny::strong("Amount of snow (mm): "),
-                  shiny::textOutput("Snow")
     )
   ),
   
