@@ -1,5 +1,5 @@
 clothes,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,picture,description,link
-too_cold_pajamas,-100,-30,0,1000,0,100,too_cold_pajamas.jpeg,It's quite cold outside. What about a lazy pajama day?,https://pixabay.com/photos/brothers-love-siblings-family-7635495/
+too_cold_pajamas,-100,-30,0,1000,0,100,too_cold_pajamas.jpg,It's quite cold outside. What about a lazy pajama day?,https://pixabay.com/photos/brothers-love-siblings-family-7635495/
 clothes_winter_warm,-30,5,0,1000,0,100,clothes_winter_warm.jpg,"Put on a warm jacket, a scarf, gloves, winter boots and warm trousers.",https://www.pexels.com/photo/toddler-standing-on-snow-holding-snowball-1620650/
 clothes_winter_light,5,10,0,1000,0,100,clothes_winter_light.jpg,Wear a warm sweater and a warm hat.,https://www.pexels.com/photo/curious-little-girl-in-warm-clothing-walking-on-winter-beach-3932879/
 clothes_autumn_rain,10,20,10,1000,0,1000,clothes_autumn.rain.jpg,Wear a rain jacket and take your umbrella with you!,https://www.pexels.com/photo/girl-in-yellow-raincoat-and-yellow-boots-holding-yellow-umbrella-walking-on-gray-concrete-side-walk-3761511/
