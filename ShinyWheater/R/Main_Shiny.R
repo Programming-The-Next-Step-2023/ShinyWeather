@@ -28,6 +28,23 @@ ui <- shiny::fluidPage(
         document.getElementById('tempBar').style.width = temp + '%';
       });
     ")),
+  
+  shiny::tags$script(shiny::HTML("
+      Shiny.addCustomMessageHandler('updateRain', function(rain) {
+        document.getElementById('rainBar').style.width = rain + '%';
+      });
+    ")),
+  shiny::tags$script(shiny::HTML("
+      Shiny.addCustomMessageHandler('updateSnow', function(snow) {
+        document.getElementById('snowBar').style.width = snow + '%';
+      });
+    ")),
+  shiny::tags$script(shiny::HTML("
+      Shiny.addCustomMessageHandler('updateWind', function(wind) {
+        document.getElementById('windBar').style.width = wind + '%';
+      });
+    ")),
+  
     shiny::tags$script(shiny::HTML("
       Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
         $('#go_button').css('background-color', message);
@@ -56,7 +73,7 @@ ui <- shiny::fluidPage(
   shiny::titlePanel(
     shiny::fluidRow(
       shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/9/95/Cartoon_cloud.svg")),
-      shiny::column(8, shiny::h1("Shiny Weather App", align = "center")), 
+      shiny::column(8, shiny::h1(shiny::tags$b("Shiny Weather App"), align = "center")), 
       shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/MeteoSet_Day_%28nbg%29.svg/1024px-MeteoSet_Day_%28nbg%29.svg.png"))
     )
     
@@ -107,7 +124,7 @@ ui <- shiny::fluidPage(
       #     
       #                 
       # )
-      shiny::tags$p("Temperature"),
+      shiny::tags$p(shiny::tags$b("Temperature"), style = "text-align: center;"),
       shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
           span("Cold"),
           div(id = "tempContainer", 
@@ -116,6 +133,39 @@ ui <- shiny::fluidPage(
                   style = "background-color: red; height: 100%; width: 0;")
           ),
           span("Hot")
+      ),
+      shiny::br(),
+      shiny::tags$p(shiny::tags$b("Rain"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 span("No rain"),
+                 div(id = "rainContainer", 
+                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
+                     div(id = "rainBar", 
+                         style = "background-color: red; height: 100%; width: 0;")
+                 ),
+                 span("Lots of rain")
+      ),
+      shiny::br(),
+      shiny::tags$p(shiny::tags$b("Snow"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 span("No snow"),
+                 div(id = "snowContainer", 
+                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
+                     div(id = "snowBar", 
+                         style = "background-color: red; height: 100%; width: 0;")
+                 ),
+                 span("Lots of snow")
+      ),
+      shiny::br(),
+      shiny::tags$p(shiny::tags$b("Wind"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 span("No wind"),
+                 div(id = "windContainer", 
+                     style = "background-color: lightgray; width: 100%; height: 20px; margin: 0 10px;", 
+                     div(id = "windBar", 
+                         style = "background-color: red; height: 100%; width: 0;")
+                 ),
+                 span("Lots of wind")
       )
     ),
     shiny::column(3,
@@ -469,6 +519,18 @@ server <- function(input, output, session) {
 
   observe({
     session$sendCustomMessage("updateTemperature", weather_data_RT()$Temp)
+  })
+  
+  observe({
+    session$sendCustomMessage("updateRain", weather_data_RT()$Rain)
+  })
+  
+  observe({
+    session$sendCustomMessage("updateSnow", weather_data_RT()$Snow)
+  })
+  
+  observe({
+    session$sendCustomMessage("updateWind", weather_data_RT()$Wind)
   })
 }
 
