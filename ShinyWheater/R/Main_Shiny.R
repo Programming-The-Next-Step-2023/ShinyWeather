@@ -2,37 +2,75 @@ source("R/weather.R")
 
 ui <- shiny::fluidPage(
   
-  # shiny::tags$style(shiny::HTML(
-  #   "body { background-color: yellow }"
-  # )),
   
   shiny::tags$head(
+    
+    # add a custom message handler that will get temperature data from the server
     shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
-        $('#go_button').css('background-color', message);
-      });
-    ")),
+        Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
+          document.getElementById('tempBar').style.width = temp + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get rain data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateRain', function(rain) {
+          document.getElementById('rainBar').style.width = rain + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get snow data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateSnow', function(snow) {
+          document.getElementById('snowBar').style.width = snow + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get wind data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateWind', function(wind) {
+          document.getElementById('windBar').style.width = wind + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will change the Show weather color
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
+          $('#go_button').css('background-color', message);
+        });
+      ")),
+    
+    # add an orange box around the instructions
     shiny::tags$style(shiny::HTML("
-      .instruction_box {
-        padding: 15px;
-        background-color: #FFA07A;
-        color: #000000;
-        border-radius: 10px;
-      }
-    ")),
+        .instruction_box {
+          padding: 15px;
+          background-color: #FFA07A;
+          color: #000000;
+          border-radius: 10px;
+        }
+      ")),
+    
+    # add a light yellow box around the descriptions
     shiny::tags$style(shiny::HTML("
-      .descriptions_box {
-        padding: 5px;
-        background-color: #fafadc;
-        color: #000000;
-        border-radius: 10px;
-      }
-    "))
+        .descriptions_box {
+          padding: 5px;
+          background-color: #fafadc;
+          color: #000000;
+          border-radius: 10px;
+        }
+      "))
   ),
   
-  # Application title
-  shiny::titlePanel(shiny::h1("Shiny Weather App", align = "center")),
+  #the title panel contains a fluidrow such that the cloud and sun can be placed next to the title
+  shiny::titlePanel(
+    shiny::fluidRow(
+      shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/9/95/Cartoon_cloud.svg")),
+      shiny::column(8, shiny::h1(shiny::tags$b("Shiny Weather App"), align = "center")), 
+      shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/MeteoSet_Day_%28nbg%29.svg/1024px-MeteoSet_Day_%28nbg%29.svg.png"))
+    )
+  ),
   
+  #first row containing instructions, calendar and map
   shiny::fluidRow(
     shiny::column(6,
                   shiny::tags$div(class = "instruction_box", 
@@ -44,10 +82,9 @@ ui <- shiny::fluidPage(
                     shiny::tags$p('Click on', shiny::tags$i("Show Activities"), ' to see what you can do outside on this weather.')
                   ),
                   shiny::br(),
+                  
                   #Calendar Input with only 7 days ahead available
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
-                  #Output which date was selected 
-                  shiny::textOutput("selectedDate"),
                   shiny::br(),
                   shiny::radioButtons("day_checkbox", "Select day or evening", choices = list("Day (8 a.m - 6 p.m.)" = "Day", "Evening (6 p.m. - 12 a.m.)" = "Evening"), selected="Day"),
                   shiny::uiOutput("background_color")
@@ -58,28 +95,85 @@ ui <- shiny::fluidPage(
     )
   ),
   
+  #second row containing Show Weather button, weather forecast values and weather progress bars
   shiny::fluidRow(
-    shiny::column(4, 
-       #Input button to show the weather 
-       shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
-                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+    shiny::column(6, 
+                  
+      #Input button to show the weather 
+      shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
+                         style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
+      shiny::br(),
+      
+      # Error in case data cannot be obtained
       shiny::textOutput("weather_error"),
+    
+      shiny::strong("Temperature (°C): "),
+      shiny::textOutput("Temperature"),
+      shiny::strong("Wind Speed (km/h): "),
+      shiny::textOutput("Wind"),
+      shiny::strong("Amount of rain (mm): "),
+      shiny::textOutput("Rain"),
+      shiny::strong("Amount of snow (mm): "),
+      shiny::textOutput("Snow")
     ),
-    shiny::column(4,
-                  shiny::strong("Temperature (°C): "),
-                  shiny::textOutput("Temperature"),
-                  shiny::strong("Wind Speed (km/h): "),
-                  shiny::textOutput("Wind")
-    ),
-    shiny::column(4,
-                  shiny::strong("Amount of rain (mm): "),
-                  shiny::textOutput("Rain"),
-                  shiny::strong("Amount of snow (mm): "),
-                  shiny::textOutput("Snow")
+    
+    shiny::column(6,
+      shiny::tags$p(shiny::tags$b("Temperature"), style = "text-align: center;"),
+      
+      # Progress bar for temperature 
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+          shiny::span("Too cold"),
+          shiny::div(id = "tempContainer", 
+              style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
+              shiny::div(id = "tempBar", 
+                  style = "background-color: #d996e9; height: 100%; width: 0;")
+          ),
+          shiny::span("Too Hot")
+      ),
+      shiny::br(),
+      
+      # Progress bar for rain
+      shiny::tags$p(shiny::tags$b("Rain"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 shiny::span("No rain "),
+                 shiny::div(id = "rainContainer", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "rainBar", 
+                         style = "background-color: #54e4f8; height: 100%; width: 0;")
+                 ),
+                 shiny::span("Lots of rain")
+      ),
+      shiny::br(),
+      
+      # Progress bar for snow
+      shiny::tags$p(shiny::tags$b("Snow"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 shiny::span("No snow "),
+                 shiny::div(id = "snowContainer", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "snowBar", 
+                         style = "background-color: #e5f7fa; height: 100%; width: 0;")
+                 ),
+                 shiny::span("Lots of snow")
+      ),
+      shiny::br(),
+      
+      # Progress bar for wind
+      shiny::tags$p(shiny::tags$b("Wind"), style = "text-align: center;"),
+      shiny::div(style = "display: flex; justify-content: space-between; align-items: center; width: 100%;",
+                 shiny::span("No wind "),
+                 shiny::div(id = "windContainer", 
+                     style = "background-color: lightgray; width: 250px; height: 20px; margin: 0 10px;", 
+                     shiny::div(id = "windBar", 
+                         style = "background-color: #aff6e6; height: 100%; width: 0;")
+                 ),
+                 shiny::span("Lots of wind")
+      )
     )
   ),
   
+  #third row containing How to dress? button, Show Activities button and image and descriptions
   shiny::fluidRow(
     shiny::column(12,
                   shiny::br(),
@@ -126,19 +220,12 @@ ui <- shiny::fluidPage(
                   ),
       )
     ),
-  #   shiny::column(4,
-  #                 shiny::conditionalPanel(
-  #                   condition = "input.show % 2 == 1",
-  #                   shiny::uiOutput("activity_description_UI")
-  #                 )
-  #   )
-  # ),
 )
 
 # Define server logic required for the app 
 server <- function(input, output, session) {
-  
-  # set background color
+
+  # set background color depending on whether Day or Evening is Selected
   output$background_color <- shiny::renderUI({
     selected_period <- input$day_checkbox
     if (selected_period == "Day") {
@@ -177,11 +264,18 @@ server <- function(input, output, session) {
     leaflet::setView(
       lng = 4.89, lat = 52.37, zoom = 7, leaflet::addTiles(leaflet::leaflet())) # Set the initial view to focus on the Netherlands
   })
+  
+  #put circle add default location
   leaflet::addCircleMarkers(lng = 4.89, lat = 52.37, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
   
+  #whether the user clicked "Show Weather" at least once
+  #if not, we want to show a special image instead of activities and clothes
+  #this variable keeps track wheather user clicked "Show Weather" at least once
+  weather_clicked_once <- shiny::reactiveVal(FALSE)
+  
   #We start with a reactive value for the weathervalues, which
-  # will be changed when we select a location and a day
-  weather_data_RT <- reactiveVal(NULL)
+  #will be changed when we select a location and a day
+  weather_data_RT <- shiny::reactiveVal(NULL)
   
   #the Images vector will be indexed according to the clicks on back and forward buttons
   #we start with a currentImageIndex on the first image
@@ -198,21 +292,17 @@ server <- function(input, output, session) {
     leaflet::addCircleMarkers(lng = lng, lat = lat, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
   })
   
-  #This outputs a text saying which date was selected 
-  output$selectedDate <- shiny::renderText({
-    
-    # can do some logic with the date here...
-    # print(input$date)
-    # print(input$date + 1)
-    
-    paste("You have selected:", input$date)
-    
-  })
-  
   # We define a list of images, they are generated with the find_activities function
   # Because the input in the find_activities function changes when we set location and time
   # We set images to be a reactive function
   activities <- shiny::reactive({
+    
+    if (weather_clicked_once() == FALSE) {
+      print(weather_clicked_once())
+      
+      print(weather_clicked_once())
+      return(list(images = "R/www/first_click_2.png", descriptions = c("First click on Show Weather")))
+    }
     
     result <- NULL
     images <- NULL
@@ -225,14 +315,14 @@ server <- function(input, output, session) {
     if (!is.null(weather_data_RT())) {
       
       #look for activities
-      result <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind)
+      result <- find_activities(temp = weather_data_RT()$Temp, rain_shower = weather_data_RT()$Rain, snow = weather_data_RT()$Snow, wind = weather_data_RT()$Wind, time_of_day=input$day_checkbox)
     }
     
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
-      images <- "R/www/first_click.png"
+      # images <- c(system.file("R", "www", "first_click_1.png", package = "ShinyWeather"))
+      images <- "R/www/no_activities_found.jpg"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -261,12 +351,6 @@ server <- function(input, output, session) {
   # this shows the description of activities when one clicks "Show activities"
   output$activity_description_UI <- shiny::renderUI({
     shiny::tags$div(class = "descriptions_box", activity_description())
-    # shiny::textOutput("activity_description")
-    # 
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
-    
   })
 
   #if back is clicked, the current index becomes one image before or stays the same if there is no image before
@@ -284,10 +368,6 @@ server <- function(input, output, session) {
     
     # save activities description to reactive value
     activity_description(activities()$description[currentImageIndex()])
-    
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
   })
   
   #if forward is clicked, the current index becomes one image after or stays the same if it is the last image
@@ -305,24 +385,15 @@ server <- function(input, output, session) {
     
     # save activities description to reactive value
     activity_description(activities()$description[currentImageIndex()])
-    
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
-    
   })
   
-  shiny::observeEvent(input$day_checkbox, {
-    print(input$day_checkbox)
-  })
-
   #when Go button is pressed, we show weather variables for day and location 
   shiny::observeEvent(input$go_button, {
+
+    weather_clicked_once(TRUE)
     
     # obtain day_index from selected date
     date <- as.Date(input$date)
-    # print(date)
-    # print(input$map_click)
     day_index <- get_day_index(date)
     
     # obtain longitude and latitude from map_click
@@ -349,10 +420,9 @@ server <- function(input, output, session) {
     if (weather_data$Error) {
       output$weather_error <- shiny::renderText({"Error retrieving weather. \nMaybe check your internet connection..."})
     }
-    
   })
   
-  #the images for the clothing
+  #the images and descriptions for the clothing
   clothes <- shiny::reactive({
     
     result <- NULL
@@ -370,22 +440,13 @@ server <- function(input, output, session) {
     # if not, put a default photo
     if (is.null(result)) {
       # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
-      images <- "R/www/first_click.png"
-      descriptions <- c("No clothes found")
+      images <- "R/www/first_click_2.png"
+      descriptions <- c("First click on Show Weather")
     } else {
       images <- result$found_clothes
       descriptions <- result$found_descriptions
     }
     return(list(images = images, descriptions = descriptions))
-    
-    # 
-    # # check if we found any activities
-    # # if not, put a default photo
-    # if (is.null(clothes)) {
-    #   clothes <- c("R/www/bubbles.jpg")
-    # }
-    # 
-    # return(clothes)
   })
   
   # this outputs how to dress when clicking "How to dress?" 
@@ -400,39 +461,53 @@ server <- function(input, output, session) {
     }, deleteFile = FALSE)
   })
   
+  # this shows the description of the recommended clothes when one clicks 
+  # "How to dress?"
   output$clothing_description_UI <- shiny::renderUI({
-    
     tags$div(class = "descriptions_box", clothes()$description[1])
-    # shiny::textOutput("clothing_description")
-    # 
-    # output$clothing_description <- shiny::renderText({
-    #   
-    #   print(clothes()$description[1])
-    #   clothes()$description[1]
-    #   # shiny::tags$div(class = "descriptions_box",
-    #   #                 clothes()$description[1]
-    #   # )
-    #   
-    # })
   })
 
+  #send the temperature data to the tempbar
+  observe({
+    session$sendCustomMessage("updateTemperature", normalize_value(weather_data_RT()$Temp, -15, 45))
+  })
+  
+  #send the rain data to the rainbar
+  observe({
+    session$sendCustomMessage("updateRain", normalize_value(weather_data_RT()$Rain, 0, 100))
+  })
+  
+  #send the snow data to the snowbar
+  observe({
+    session$sendCustomMessage("updateSnow", normalize_value(weather_data_RT()$Snow, 0, 100))
+  })
+  
+  #send the wind data to the windbar
+  observe({
+    session$sendCustomMessage("updateWind", normalize_value(weather_data_RT()$Wind, 0, 60))
+  })
+}
+
+#normalize a value between 0 and 100 where the value is located between 
+#value_min and value_max for correctly showing on the bars
+#this is because the bars are ranged between 0 and 100
+normalize_value <- function(value, value_min, value_max) {
+  
+  #make sure value that value is not smaller than value_min and not larger
+  #than value-max
+  value <- max(value, value_min)
+  value <- min(value, value_max)
+  
+  #first normalize to be between 0 and 1
+  value <- (value - value_min) / (value_max - value_min)
+  
+  #secondly, scale to be between 0 and 100
+  value <- value * 100
+  
+  return(value)
 }
 
 # Takes a date object and gives a day_index based on number of days different to current date
 get_day_index <- function(date) {
   return(as.integer(date - Sys.Date()))
 }
-
-#' runShinyWeather
-#' 
-#' This is the function that can be run by the user to open the ShinyWeather App
-#' 
-#' @export 
-#'
-#' @examples runShinyWeather()
-#' 
-runShinyWeather <- function() {
-  shiny::shinyApp(ui = ui, server = server)
-}
-runShinyWeather()
-

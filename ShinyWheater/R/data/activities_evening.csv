@@ -1,0 +1,26 @@
+activity,temp_low,temp_high,rain_low,rain_high,snow_low,snow_high,wind_low,wind_high,picture,description,link
+splash_in_puddles,0,35,5,30,0,0,0,35,splash_in_puddles.jpg,It seems like today you might find little puddles around. Splashing in puddles is great fun!,https://unsplash.com/photos/eUbNeGQEh2U
+park_walk,-10,30,0,5,0,50,0,20,park_walk.jpg,Walk and play the in park. It could be a great time to make new friends. ,https://unsplash.com/photos/ZkO8GzH0D1Q
+ice_skating,-20,0,0,0,0,25,0,30,ice_skating.jpg,Water freezes now. It could be a great chance to go ice skating outdoors.,https://unsplash.com/photos/lnCSMikKqfw
+snowman,-20,0,0,0,20,100,0,20,snowman.png,"What about making a snowman? Take a carrot for the nose, chalk for the buttons and find brenches for the arms!",https://unsplash.com/photos/5WIqleHzOok
+hot_chocolate_inside,-100,5,0,100,0,1000,0,100,hot_chocolate_inside.jpg,On a very cold day it's nice to drink hot chocolate or your favorite hot drink inside.,https://unsplash.com/s/photos/cozy-inside
+puzzle_inside,-100,0,50,1000,50,1000,50,100,puzzle_inside.jpg,Make a puzzle with your family!,https://unsplash.com/photos/AoX_1zm1NOM
+biking,5,35,0,5,0,0,0,40,biking.jpg,Go biking! Do not forget to wear a helmet.,https://unsplash.com/photos/JOnaeVoNkTQ
+water_gun_fight,25,35,0,0,0,0,0,20,water_gun_fight.jpg,It's hot enough to play with water guns.,https://unsplash.com/photos/JSLuw23jedY
+bake_cookies,-100,5,0,100,0,1000,0,100,bake_cookies.jpg,"It's cold outside, so what about baking some cookies or cakes with friends and family?",https://unsplash.com/photos/UyEmagArOLY
+park_picnic,20,35,0,0,0,0,0,30,park_picnic.jpg,Have a picnic in the park!,https://unsplash.com/photos/mrXFk5CmkX4
+visit_playground,0,35,0,5,0,20,0,25,visit_playground.jpg,Visit a playground and try all the slides.,https://unsplash.com/photos/E0BmfKjeQrw
+sailing,10,35,0,5,0,0,20,40,sailing.jpg,Go sailing if you live close to a body of water!,https://unsplash.com/photos/ZkO8GzH0D1Q
+build_wind_chime,10,35,0,5,0,0,12,28,build_wind_chime.jpg,Build a wind chime and listen to it move in the wind.,https://unsplash.com/photos/NwBRjju4h5s
+bubbles,10,35,0,5,0,0,12,20,bubbles.jpg,Blow bubbles and look how pretty they are in the air.,https://unsplash.com/photos/6cQHvjzmZOU
+read_inside,-100,5,0,100,0,1000,0,100,read_inside.jpg,Read books inside while the weather outside is a little harsh.,https://unsplash.com/photos/u0zTce7KNlY
+too_cold_pajamas,-100,5,0,100,0,1000,0,100,too_cold_pajama.jpg,"Play in pajamas, it's a little too cold to play outside now.",https://unsplash.com/photos/KFdrrt0EXQ8
+photography,5,35,0,0,0,0,0,100,photography.jpg,Go out and practice your photograpy skills!,https://www.pexels.com/photo/photo-of-kid-wearing-knitted-sweater-3932975/
+tent_backyard,15,35,0,5,0,0,0,40,tent_backyard.jpg,Build a tent in the back yard and wait until it's dark to watch the starry sky!,https://www.pexels.com/photo/photo-of-kid-wearing-knitted-sweater-3932975/
+glow_stick,-5,35,0,5,0,20,0,40,glow_stick.jpg,Play with glow sticks when in the sun is down.,https://unsplash.com/photos/Q8EORX2I1UY
+telescope,0,35,0,0,0,0,0,40,telescope.jpg,Watch the night sky through a telescope!,https://www.pexels.com/photo/little-girl-looking-through-a-telescope-14567755/
+gardening,5,35,0,0,0,0,0,20,gardening.jpg,"Whether is morning or evening, gradening is a fun and relaxing activity!",https://www.pexels.com/photo/girl-wearing-white-floral-dress-beside-grass-plant-at-daytime-1134062/
+photography,5,35,0,0,0,0,0,100,photography.jpg,Do you know how to use a camera? Go out an take some photos!,https://www.pexels.com/photo/boy-using-camera-near-green-leaf-plants-1374510/
+campfire,0,25,0,0,0,0,0,30,campfire.jpg,Ask your parents to start a campfire. Eat marshmallows and tell stories around the fire.,https://www.pexels.com/photo/father-with-his-sons-sitting-by-the-campfire-12932681/
+hide_and_seek,0,35,0,0,0,0,0,30,hide_and_seek.jpg,Play hide and seek!,https://www.pexels.com/photo/a-family-having-fun-playing-hide-and-seek-14349634/
+too_warm,30,50,0,5,0,0,0,100,too_warm_pajama.jpg,It's quite warm outside. How about a lazy pajama day?,
