@@ -268,9 +268,14 @@ server <- function(input, output, session) {
   #put circle add default location
   leaflet::addCircleMarkers(lng = 4.89, lat = 52.37, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
   
+  #whether the user clicked "Show Weather" at least once
+  #if not, we want to show a special image instead of activities and clothes
+  #this variable keeps track wheather user clicked "Show Weather" at least once
+  weather_clicked_once <- shiny::reactiveVal(FALSE)
+  
   #We start with a reactive value for the weathervalues, which
   #will be changed when we select a location and a day
-  weather_data_RT <- reactiveVal(NULL)
+  weather_data_RT <- shiny::reactiveVal(NULL)
   
   #the Images vector will be indexed according to the clicks on back and forward buttons
   #we start with a currentImageIndex on the first image
@@ -292,6 +297,13 @@ server <- function(input, output, session) {
   # We set images to be a reactive function
   activities <- shiny::reactive({
     
+    if (weather_clicked_once() == FALSE) {
+      print(weather_clicked_once())
+      
+      print(weather_clicked_once())
+      return(list(images = "R/www/first_click_2.png", descriptions = c("First click on Show Weather")))
+    }
+    
     result <- NULL
     images <- NULL
     descriptions <- NULL
@@ -310,7 +322,7 @@ server <- function(input, output, session) {
     # if not, put a default photo
     if (is.null(result)) {
       # images <- c(system.file("R", "www", "first_click_1.png", package = "ShinyWeather"))
-      images <- "R/www/first_click_1.png"
+      images <- "R/www/bubbles.jpg"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -375,12 +387,10 @@ server <- function(input, output, session) {
     activity_description(activities()$description[currentImageIndex()])
   })
   
-  # shiny::observeEvent(input$day_checkbox, {
-  #   print(input$day_checkbox)
-  # })
-
   #when Go button is pressed, we show weather variables for day and location 
   shiny::observeEvent(input$go_button, {
+
+    weather_clicked_once(TRUE)
     
     # obtain day_index from selected date
     date <- as.Date(input$date)
@@ -431,7 +441,7 @@ server <- function(input, output, session) {
     if (is.null(result)) {
       # images <- c(system.file("R", "www", "bubbles.jpg", package = "ShinyWeather"))
       images <- "R/www/first_click_2.png"
-      descriptions <- c("No clothes found")
+      descriptions <- c("First click on Show Weather")
     } else {
       images <- result$found_clothes
       descriptions <- result$found_descriptions
