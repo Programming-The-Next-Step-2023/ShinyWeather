@@ -5,7 +5,7 @@ source("R/Main_shiny.R")
 #'
 #' @export
 #'
-#' @examples exanple
+#' @examples runShinyWeather()
 #'
 runShinyWeather <- function() {
   shiny::shinyApp(ui = ui, server = server)

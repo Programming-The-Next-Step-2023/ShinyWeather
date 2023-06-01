@@ -4,82 +4,63 @@ ui <- shiny::fluidPage(
   
   
   shiny::tags$head(
-
-  #   shiny::tags$style(shiny::HTML("
-  #     .cold { background-color: blue; }
-  #     .warm { background-color: orange; }
-  #     .hot { background-color: red; }
-  #   ")),
     
-  #   shiny::tags$script(shiny::HTML("
-  #   Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
-  #     document.getElementById('tempBar').value = temp;
-  #     if(temp < 10) {
-  #       tempBar.className = 'cold';
-  #     } else if(temp > 30) {
-  #       tempBar.className = 'warm';
-  #     } else {
-  #       tempBar.className = 'hot';
-  #     }
-  #   });
-  # ")),
-    
-  # add a custom message handler that will get temperature data from the server
-  shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
-        document.getElementById('tempBar').style.width = temp + '%';
-      });
-    ")),
-  
-  # add a custom message handler that will get rain data from the server
-  shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('updateRain', function(rain) {
-        document.getElementById('rainBar').style.width = rain + '%';
-      });
-    ")),
-  
-  # add a custom message handler that will get snow data from the server
-  shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('updateSnow', function(snow) {
-        document.getElementById('snowBar').style.width = snow + '%';
-      });
-    ")),
-  
-  # add a custom message handler that will get wind data from the server
-  shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('updateWind', function(wind) {
-        document.getElementById('windBar').style.width = wind + '%';
-      });
-    ")),
-  
-  # add a custom message handler that will change the Show weather color
+    # add a custom message handler that will get temperature data from the server
     shiny::tags$script(shiny::HTML("
-      Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
-        $('#go_button').css('background-color', message);
-      });
-    ")),
-  # add an orange box around the instructions
+        Shiny.addCustomMessageHandler('updateTemperature', function(temp) {
+          document.getElementById('tempBar').style.width = temp + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get rain data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateRain', function(rain) {
+          document.getElementById('rainBar').style.width = rain + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get snow data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateSnow', function(snow) {
+          document.getElementById('snowBar').style.width = snow + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will get wind data from the server
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('updateWind', function(wind) {
+          document.getElementById('windBar').style.width = wind + '%';
+        });
+      ")),
+    
+    # add a custom message handler that will change the Show weather color
+    shiny::tags$script(shiny::HTML("
+        Shiny.addCustomMessageHandler('changeButtonColor', function(message) {
+          $('#go_button').css('background-color', message);
+        });
+      ")),
+    
+    # add an orange box around the instructions
     shiny::tags$style(shiny::HTML("
-      .instruction_box {
-        padding: 15px;
-        background-color: #FFA07A;
-        color: #000000;
-        border-radius: 10px;
-      }
-    ")),
-  
-  # add a light yellow box around the descriptions
+        .instruction_box {
+          padding: 15px;
+          background-color: #FFA07A;
+          color: #000000;
+          border-radius: 10px;
+        }
+      ")),
+    
+    # add a light yellow box around the descriptions
     shiny::tags$style(shiny::HTML("
-      .descriptions_box {
-        padding: 5px;
-        background-color: #fafadc;
-        color: #000000;
-        border-radius: 10px;
-      }
-    "))
+        .descriptions_box {
+          padding: 5px;
+          background-color: #fafadc;
+          color: #000000;
+          border-radius: 10px;
+        }
+      "))
   ),
   
-
   #the title panel contains a fluidrow such that the cloud and sun can be placed next to the title
   shiny::titlePanel(
     shiny::fluidRow(
@@ -87,10 +68,9 @@ ui <- shiny::fluidPage(
       shiny::column(8, shiny::h1(shiny::tags$b("Shiny Weather App"), align = "center")), 
       shiny::column(2, shiny::img(height = 50, width = 50, src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/MeteoSet_Day_%28nbg%29.svg/1024px-MeteoSet_Day_%28nbg%29.svg.png"))
     )
-    
   ),
   
-  #first row containing instructions, callendar and map
+  #first row containing instructions, calendar and map
   shiny::fluidRow(
     shiny::column(6,
                   shiny::tags$div(class = "instruction_box", 
@@ -102,6 +82,7 @@ ui <- shiny::fluidPage(
                     shiny::tags$p('Click on', shiny::tags$i("Show Activities"), ' to see what you can do outside on this weather.')
                   ),
                   shiny::br(),
+                  
                   #Calendar Input with only 7 days ahead available
                   shiny::dateInput("date", "Select a date:", value = Sys.Date(), min = Sys.Date(), max = Sys.Date()+6),
                   shiny::br(),
@@ -118,9 +99,9 @@ ui <- shiny::fluidPage(
   shiny::fluidRow(
     shiny::column(6, 
                   
-       #Input button to show the weather 
-       shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
-                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+      #Input button to show the weather 
+      shiny::actionButton("go_button", "Show Weather", shiny::icon("cloud"), 
+                         style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
       shiny::br(),
       shiny::br(),
       
@@ -244,7 +225,7 @@ ui <- shiny::fluidPage(
 # Define server logic required for the app 
 server <- function(input, output, session) {
 
-  # set background color depending on wether Day or Evening is Selected
+  # set background color depending on whether Day or Evening is Selected
   output$background_color <- shiny::renderUI({
     selected_period <- input$day_checkbox
     if (selected_period == "Day") {
@@ -283,10 +264,12 @@ server <- function(input, output, session) {
     leaflet::setView(
       lng = 4.89, lat = 52.37, zoom = 7, leaflet::addTiles(leaflet::leaflet())) # Set the initial view to focus on the Netherlands
   })
+  
+  #put circle add default location
   leaflet::addCircleMarkers(lng = 4.89, lat = 52.37, radius = 5, color = "green", leaflet::clearMarkers(leaflet::leafletProxy("map")) )
   
   #We start with a reactive value for the weathervalues, which
-  # will be changed when we select a location and a day
+  #will be changed when we select a location and a day
   weather_data_RT <- reactiveVal(NULL)
   
   #the Images vector will be indexed according to the clicks on back and forward buttons
@@ -356,12 +339,6 @@ server <- function(input, output, session) {
   # this shows the description of activities when one clicks "Show activities"
   output$activity_description_UI <- shiny::renderUI({
     shiny::tags$div(class = "descriptions_box", activity_description())
-    # shiny::textOutput("activity_description")
-    # 
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
-    
   })
 
   #if back is clicked, the current index becomes one image before or stays the same if there is no image before
@@ -379,10 +356,6 @@ server <- function(input, output, session) {
     
     # save activities description to reactive value
     activity_description(activities()$description[currentImageIndex()])
-    
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
   })
   
   #if forward is clicked, the current index becomes one image after or stays the same if it is the last image
@@ -400,24 +373,17 @@ server <- function(input, output, session) {
     
     # save activities description to reactive value
     activity_description(activities()$description[currentImageIndex()])
-    
-    # output$activity_description <- shiny::renderText({
-    #   activities()$descriptions[currentImageIndex()]
-    # })
-    
   })
   
-  shiny::observeEvent(input$day_checkbox, {
-    print(input$day_checkbox)
-  })
+  # shiny::observeEvent(input$day_checkbox, {
+  #   print(input$day_checkbox)
+  # })
 
   #when Go button is pressed, we show weather variables for day and location 
   shiny::observeEvent(input$go_button, {
     
     # obtain day_index from selected date
     date <- as.Date(input$date)
-    # print(date)
-    # print(input$map_click)
     day_index <- get_day_index(date)
     
     # obtain longitude and latitude from map_click
@@ -444,10 +410,9 @@ server <- function(input, output, session) {
     if (weather_data$Error) {
       output$weather_error <- shiny::renderText({"Error retrieving weather. \nMaybe check your internet connection..."})
     }
-    
   })
   
-  #the images for the clothing
+  #the images and descriptions for the clothing
   clothes <- shiny::reactive({
     
     result <- NULL
@@ -472,15 +437,6 @@ server <- function(input, output, session) {
       descriptions <- result$found_descriptions
     }
     return(list(images = images, descriptions = descriptions))
-    
-    # 
-    # # check if we found any activities
-    # # if not, put a default photo
-    # if (is.null(clothes)) {
-    #   clothes <- c("R/www/bubbles.jpg")
-    # }
-    # 
-    # return(clothes)
   })
   
   # this outputs how to dress when clicking "How to dress?" 
@@ -495,20 +451,10 @@ server <- function(input, output, session) {
     }, deleteFile = FALSE)
   })
   
+  # this shows the description of the recommended clothes when one clicks 
+  # "How to dress?"
   output$clothing_description_UI <- shiny::renderUI({
-    
     tags$div(class = "descriptions_box", clothes()$description[1])
-    # shiny::textOutput("clothing_description")
-    # 
-    # output$clothing_description <- shiny::renderText({
-    #   
-    #   print(clothes()$description[1])
-    #   clothes()$description[1]
-    #   # shiny::tags$div(class = "descriptions_box",
-    #   #                 clothes()$description[1]
-    #   # )
-    #   
-    # })
   })
 
   #send the temperature data to the tempbar
