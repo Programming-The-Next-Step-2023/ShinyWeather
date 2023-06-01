@@ -299,7 +299,8 @@ server <- function(input, output, session) {
     
     if (weather_clicked_once() == FALSE) {
       
-      return(list(images = system.file("R", "www", "first_click_2.png", package = "ShinyWeather"), descriptions = c("First click on Show Weather")))
+      # return(list(images = system.file("R", "www", "first_click_1.png", package = "ShinyWeather"), descriptions = c("First click on Show Weather")))
+      return(list(images = "R/www/first_click_1.png", descriptions = c("First click on Show Weather")))
     }
     
     result <- NULL
@@ -319,8 +320,8 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c(system.file("R", "www", "first_click_1.png", package = "ShinyWeather"))
-      # images <- "R/www/no_activities_found.jpg"
+      # images <- c(system.file("R", "www", "no_activities_found.jpg", package = "ShinyWeather"))
+      images <- "R/www/no_activities_found.jpg"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -437,8 +438,8 @@ server <- function(input, output, session) {
     # check if we found any activities
     # if not, put a default photo
     if (is.null(result)) {
-      images <- c(system.file("R", "www", "first_click_2.png", package = "ShinyWeather"))
-      # images <- "R/www/first_click_2.png"
+      # images <- c(system.file("R", "www", "first_click_2.png", package = "ShinyWeather"))
+      images <- "R/www/first_click_2.png"
       descriptions <- c("First click on Show Weather")
     } else {
       images <- result$found_clothes
