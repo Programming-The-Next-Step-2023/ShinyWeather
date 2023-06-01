@@ -322,7 +322,7 @@ server <- function(input, output, session) {
     # if not, put a default photo
     if (is.null(result)) {
       # images <- c(system.file("R", "www", "first_click_1.png", package = "ShinyWeather"))
-      images <- "R/www/bubbles.jpg"
+      images <- "R/www/no_activities_found.jpg"
       descriptions <- c("No activities found")
     } else {
       images <- result$found_activities
@@ -469,7 +469,7 @@ server <- function(input, output, session) {
 
   #send the temperature data to the tempbar
   observe({
-    session$sendCustomMessage("updateTemperature", normalize_value(weather_data_RT()$Temp, -15, 40))
+    session$sendCustomMessage("updateTemperature", normalize_value(weather_data_RT()$Temp, -15, 45))
   })
   
   #send the rain data to the rainbar
