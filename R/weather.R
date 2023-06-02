@@ -116,10 +116,10 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
   #Load the correct csv file based on Day or Evening
   if (time_of_day == "Day") {
     activities <- read.csv("R/data/activities_day.csv")
-    # activities <- read.csv(system.file("R", "data", "activities_day.csv", package = "ShinyWeather"))
+     #activities <- read.csv(system.file("R", "data", "activities_day.csv", package = "ShinyWeather"))
   } else {
     activities <- read.csv("R/data/activities_evening.csv")
-    # activities <- read.csv(system.file("R", "data", "activities_evening.csv", package = "ShinyWeather"))
+     #activities <- read.csv(system.file("R", "data", "activities_evening.csv", package = "ShinyWeather"))
   }
   
   # for each variable, keep only the rows (activities) where the value of the variable
