@@ -115,13 +115,15 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
   
   #Load the correct csv file based on Day or Evening
   if (time_of_day == "Day") {
-    load("data/activities_day.rda")
+    # load("data/activities_day.rda")
+    data("activities_day", package = "ShinyWeather")
     activities <- activities_day
     # activities <- read.csv("R/data/activities_day.csv")
      # activities <- read.csv(system.file("R", "data", "activities_day.csv", package = "ShinyWeather"))
   } else {
     # activities <- read.csv("R/data/activities_evening.csv")
-    load("data/activities_evening.rda")
+    # load("data/activities_evening.rda")
+    data("activities_evening", package = "ShinyWeather")
     activities <- activities_evening
      # activities <- read.csv(system.file("R", "data", "activities_evening.csv", package = "ShinyWeather"))
   }
@@ -155,7 +157,8 @@ find_clothing <- function (temp, rain_shower, snow){
    # clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
   # clothing <- read.csv("R/data/clothing.csv")
   
-  load("data/clothing.rda")
+  # load("data/clothing.rda")
+  data("clothing", package = "ShinyWeather")
 
   # load(system.file("data"))
   
