@@ -73,7 +73,7 @@ knitr::include_graphics("www/map_printscreen.png")
 ```
 
 
-*Instructions**. The orange text field contains instructions of how to use the app.
+**Instructions**. The orange text field contains instructions of how to use the app.
 
 ```{r, fig.cap="Instructions", out.width = "80%", echo = FALSE}
 knitr::include_graphics("www/instructions_printscreen.png")
@@ -106,6 +106,7 @@ knitr::include_graphics("www/weather_bars_printscreen.png")
 
 **Show Clothes Button**.When weather has been displayed, the user can click "Show Clothes" and a pictue of an outfit will be displayed.
 The picture is selected talking into account temperature, rain and snow. Under the picture, there will be a text description.
+The Show Activities button is a toggle button, if it is clicked multiple times it shows and hides the activities.
 
 ```{r, fig.cap="Show Clothes Button", out.width = "80%", echo = FALSE}
 knitr::include_graphics("www/clothing_printscreen.png")
@@ -114,6 +115,7 @@ knitr::include_graphics("www/clothing_printscreen.png")
 
 **Show Activities Button**.When weather has been displayed, the user can click "Show Activities" and a pictue of one activity will be displayed on the screen. Under the picture, there will be a text description.
 The picture is selected talking into account temperature, rain, snow and wind.
+The Show Activities button is a toggle button, if it is clicked multiple times it shows and hides the activities.
 
 ```{r, fig.cap="Show Activities Button", out.width = "80%", echo = FALSE}
 knitr::include_graphics("www/activities_printscreen.png")
@@ -132,5 +134,5 @@ knitr::include_graphics("www/back_forward_printscreen.png")
 
 # Conclusion
 
-Wrapping up the report
+In conclusion, ShinyWeather is an app that explains the weather with the help of visuals: progress bars and images.
 
