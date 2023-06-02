@@ -39,7 +39,7 @@ To install the ShinyWheater package, run the following command in the R console:
 
 
 ```{r,  echo = TRUE, eval = FALSE}
-remotes::install_github("Programming-The-Next-Step-2023/ShinyWheater")
+remotes::install_github("Programming-The-Next-Step-2023/ShinyWeather@Fifth-branch")
 ```
 
 ## How to run the App

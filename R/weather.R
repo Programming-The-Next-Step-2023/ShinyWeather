@@ -154,7 +154,10 @@ find_clothing <- function (temp, rain_shower, snow){
   
    # clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
   # clothing <- read.csv("R/data/clothing.csv")
+  
   load("data/clothing.rda")
+
+  # load(system.file("data"))
   
   # for each variable, keep only the rows (activities) where the value of the variable
   # falls inside the two thresholds - that is why we subset each time
