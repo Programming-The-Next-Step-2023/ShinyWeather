@@ -35,24 +35,28 @@
 #' Browse through the activities using the "Back" and "Forward" buttons.
 #' The activities displayed are based on the weather variables. They show what kind of activities can be done based on the weather conditions of the chosen day.
 #' 
-#'  @section Common problem:
+#' @section Common problem:
+#' 
 #' The app uses an API to obtain the weather data. It will not work without an internet connection.
 #' 
 #' @section Credits:
 #' 
 #' The weather forecast is obtained from: https://open-meteo.com/
 #' The pictures used in the app are from: https://unsplash.com/ and https://www.pexels.com
-#' Links to all activities pictures can be found by running ShinyWheather::activities_day$link and ShinyWheather::activities_night$link
-#' Links to all clothes pictures can be found by running ShinyWheather::clothes$link
+#' Links to all activities pictures can be found by running <b>ShinyWheather::activities_day$link</b> and <b>ShinyWheather::activities_night$link</b>
+#' Links to all clothes pictures can be found by running <b>ShinyWheather::clothes$link</b>
 #' 
-#' The following websites were used to determine the thresholds for each weather variable:
+#' The following websites were used to determine the thresholds for each weather variable corresponding to each activity:
+#' 
 #' https://varendoejesamen.nl/kenniscentrum/artikel/windkracht-en-de-schaal-van-beaufort-hoe-zit-het-precies
+#' 
 #' https://windy.app/blog/how-do-we-measure-precipitation.html
+#' 
 #' https://charts.ecmwf.int/products/medium-snowfall?base_time=202306020000&projection=opencharts_europe&valid_time=202306020600
 #' 
 #' @section Contact:
 #' 
-#' For information about the ShinyWeather App, contact `magda.matetovici@student.uva.nl`
+#' For information about the ShinyWeather app, contact `magda.matetovici@student.uva.nl`
 #' 
 #' @docType package
 #'
