@@ -51,7 +51,9 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0, 
   
   #check if data index is not between 0 and 6, send error message
   if (day_index > 6 | day_index < 0){
-    stop("The day index can only take values from 0 to 6 (weather data for 7 days is available)")
+    print("The day index can only take values from 0 to 6 (weather data for 7 days is available).")
+    print("Setting day_index to 0...")
+    time_of_day <- 0
   }
   
   #check if time of the day is not day or evening, send error message
@@ -92,7 +94,7 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0, 
   # shower is the mean showers of all hours for day or evening
   showers_day <- round(sum(weather_data$hourly$showers[(day_index*24 + ind_low):(day_index*24 + ind_high)]), 2)
   
-  # snow is the mean snow of all hours for day or evening
+  # snow is the mean snowfall of all hours for day or evening
   snow_day <- round(sum(weather_data$hourly$snowfall[(day_index*24 + ind_low):(day_index*24 + ind_high)]), 2)
   
   # rain is the mean rain of all hours for day or evening
@@ -115,11 +117,11 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
   
   #Load the correct csv file based on Day or Evening
   if (time_of_day == "Day") {
-    activities <- read.csv("R/data/activities_day.csv")
-    # activities <- read.csv(system.file("R", "data", "activities_day.csv", package = "ShinyWeather"))
+    data("activities_day", package = "ShinyWeather")
+    activities <- activities_day
   } else {
-    activities <- read.csv("R/data/activities_evening.csv")
-    # activities <- read.csv(system.file("R", "data", "activities_evening.csv", package = "ShinyWeather"))
+    data("activities_evening", package = "ShinyWeather")
+    activities <- activities_evening
   }
   
   # for each variable, keep only the rows (activities) where the value of the variable
@@ -134,7 +136,7 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
   if (nrow(newdata) == 0) {
     return(NULL)
   }
-  found_activities <- paste0("R/www/", newdata$picture)
+  found_activities <- paste0(system.file("www", package="ShinyWeather"), "/", newdata$picture)
   found_descriptions <- newdata$description
   
   return(list(found_activities = found_activities, found_descriptions = found_descriptions))
@@ -145,11 +147,7 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
 find_clothing <- function (temp, rain_shower, snow){
   
   #load csv file containing lower and upper threshold of the three variables for each clothing style
-  # print(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
-  # clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
-  
-  # print(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
-  clothing <- read.csv("R/data/clothing.csv")
+  data("clothing", package = "ShinyWeather")
   
   # for each variable, keep only the rows (activities) where the value of the variable
   # falls inside the two thresholds - that is why we subset each time
@@ -162,7 +160,7 @@ find_clothing <- function (temp, rain_shower, snow){
   if (nrow(newdata) == 0) {
     return(NULL)
   }
-  found_clothes <- paste0("R/www/", newdata$picture)
+  found_clothes <- paste0(system.file("www", package="ShinyWeather"), "/", newdata$picture)
   found_descriptions <- newdata$description
   
   return(list(found_clothes = found_clothes, found_descriptions = found_descriptions)) 

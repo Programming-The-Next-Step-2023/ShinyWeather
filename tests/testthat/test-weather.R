@@ -14,13 +14,6 @@ test_that("the weather_api() gives error if input is out of bounds", {
   expect_error(weather_api(latitude= 67, longitude = -290))
 })
 
-
-# Tests for all_weather_data()
-test_that("the all_weather_data() gives error if day_index is out of bounds", {
-  expect_error(all_weather_data(day_index = -1))
-  expect_error(all_weather_data(day_index = 8))
-})
-
 test_that("the all_weather_data() gives error if time_of_day is incorrect", {
   
   # day and night should be written with capital first letter
