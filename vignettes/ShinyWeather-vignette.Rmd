@@ -45,6 +45,12 @@ remotes::install_github("Programming-The-Next-Step-2023/ShinyWeather")
 ## How to run the App
 
 The ShinyWeather App can be started by running the function runShinyWeather().
+```{r,  echo = TRUE, eval = FALSE}
+library(ShinyWeather)
+
+runShinyWeather()
+```
+
 The weather will be shown only if your computer has an internet connection. If there is no internet connection there will be an error message:
 
 ```{r, fig.cap="Error if no internet", out.width = "80%", echo = FALSE}
@@ -56,7 +62,7 @@ This message will also appear if there are other problems with retrieving the da
 
 
 **Calendar**. Under "Select a date" there is a calendar where the user can click to select a day.
-The dates availanle are the current day and six consecutive days in the future.
+The dates available are the current day and six consecutive days in the future.
 
 ```{r, fig.cap="The Calendar", out.width = "80%", echo = FALSE}
 knitr::include_graphics("www/calendar_printscreen.png") 
@@ -135,4 +141,4 @@ knitr::include_graphics("www/back_forward_printscreen.png")
 # Conclusion
 
 In conclusion, ShinyWeather is an app that explains the weather with the help of visuals: progress bars and images.
-
+Its purpose is to make the weather forecast more accessible to children.
