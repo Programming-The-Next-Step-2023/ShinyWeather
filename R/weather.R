@@ -138,7 +138,7 @@ find_activities <- function (temp, rain_shower, snow, wind, time_of_day = "Day")
   if (nrow(newdata) == 0) {
     return(NULL)
   }
-  found_activities <- paste0("R/www/", newdata$picture)
+  found_activities <- paste0(system.file("www", package="ShinyWeather"), "/", newdata$picture)
   found_descriptions <- newdata$description
   
   return(list(found_activities = found_activities, found_descriptions = found_descriptions))
@@ -155,6 +155,7 @@ find_clothing <- function (temp, rain_shower, snow){
    # clothing <- read.csv(system.file("R", "data", "clothing.csv", package = "ShinyWeather"))
   # clothing <- read.csv("R/data/clothing.csv")
   load("data/clothing.rda")
+  
   # for each variable, keep only the rows (activities) where the value of the variable
   # falls inside the two thresholds - that is why we subset each time
   newdata <- subset(clothing,  temp >= temp_low & temp <= temp_high)
@@ -166,7 +167,7 @@ find_clothing <- function (temp, rain_shower, snow){
   if (nrow(newdata) == 0) {
     return(NULL)
   }
-  found_clothes <- paste0("R/www/", newdata$picture)
+  found_clothes <- paste0(system.file("www", package="ShinyWeather"), "/", newdata$picture)
   found_descriptions <- newdata$description
   
   return(list(found_clothes = found_clothes, found_descriptions = found_descriptions)) 
