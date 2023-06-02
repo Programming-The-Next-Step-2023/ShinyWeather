@@ -114,7 +114,7 @@ ui <- shiny::fluidPage(
       shiny::textOutput("Wind"),
       shiny::strong("Amount of rain (mm): "),
       shiny::textOutput("Rain"),
-      shiny::strong("Amount of snow (mm): "),
+      shiny::strong("Amount of snow (cm): "),
       shiny::textOutput("Snow")
     ),
     

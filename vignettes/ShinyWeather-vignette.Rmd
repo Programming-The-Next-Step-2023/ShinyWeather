@@ -35,11 +35,11 @@ ShinyWeather obtains the weather forcast throguh an API from the Open-Meteo webs
 
 ## Installation
 
-To install the ShinyWheater package, run the following command in the R console:
+To install the ShinyWeather package, run the following command in the R console:
 
 
 ```{r,  echo = TRUE, eval = FALSE}
-remotes::install_github("Programming-The-Next-Step-2023/ShinyWeather@Fifth-branch")
+remotes::install_github("Programming-The-Next-Step-2023/ShinyWeather")
 ```
 
 ## How to run the App
