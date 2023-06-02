@@ -51,7 +51,9 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0, 
   
   #check if data index is not between 0 and 6, send error message
   if (day_index > 6 | day_index < 0){
-    stop("The day index can only take values from 0 to 6 (weather data for 7 days is available)")
+    print("The day index can only take values from 0 to 6 (weather data for 7 days is available).")
+    print("Setting day_index to 0...")
+    time_of_day <- 0
   }
   
   #check if time of the day is not day or evening, send error message
@@ -92,7 +94,7 @@ all_weather_data <- function(latitude = 52.37, longitude = 4.89, day_index = 0, 
   # shower is the mean showers of all hours for day or evening
   showers_day <- round(sum(weather_data$hourly$showers[(day_index*24 + ind_low):(day_index*24 + ind_high)]), 2)
   
-  # snow is the mean snow of all hours for day or evening
+  # snow is the mean snowfall of all hours for day or evening
   snow_day <- round(sum(weather_data$hourly$snowfall[(day_index*24 + ind_low):(day_index*24 + ind_high)]), 2)
   
   # rain is the mean rain of all hours for day or evening
